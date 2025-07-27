@@ -91,6 +91,15 @@
     transition: color 0.2s ease-in;
 }
 
+.dnh-copyright {
+    font-size: 0.75em;
+    text-shadow:
+     -1px -1px 0 #cfc2af,
+      1px -1px 0 #cfc2af,
+     -1px  1px 0 #cfc2af,
+      1px  1px 0 #cfc2af;
+}
+
 @media (max-width: 768px) {
     .title-row .d-flex.flex-row.align-items-center {
         flex-direction: column !important;
