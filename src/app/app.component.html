@@ -21,7 +21,7 @@
     <div class="construct-bottom"></div>
     <div class="alert alert-success d-flex align-items-center m-3">
       <svg class="bi flex-shrink-0 me-3" style="max-height: 16px; max-width: 16px;" role="img"><use xlink:href="#info-fill"/></svg>
-      <div class="flex-grow-1">Odlukom društva, do kraja 2025. godine članarina u DNH iznosi 10 €. Digitalna pristupnica bit će uskoro dostupna, a u međuvremenu, za učlanjenje molimo kontaktirajte nas direktno na bilo koji od niže navedenih načina.</div>
+      <div class="flex-grow-1">Odlukom Društva, do kraja 2025. godine članarina u DNH iznosi 10 €. Digitalna pristupnica bit će uskoro dostupna, a u međuvremenu, za učlanjenje molimo kontaktirajte nas direktno na bilo koji od niže navedenih načina.</div>
     </div>
     <div class="container-fluid px-lg-5 px-sm-1">
       <div class="row">
@@ -78,7 +78,9 @@
       </div>
     </div>
   </div>
-  <div class="flex-grow-1 sea d-flex align-items-end justify-content-center dnh-copyright" style="min-height: 100px;">
-    © Društvo naturista Hrvatske, {{ today | date:'yyyy' }}.
+  <div class="flex-grow-1 sea d-flex flex-column align-items-center justify-content-end" style="min-height: 100px;">
+    <label class="dnh-inf">Društvo naturista Hrvatske član je Međunarodne naturističke federacije (INF-FNI).</label>
+    <a href="https://inf-fni.org/" class="dnh-inf-link"><img src="../assets/inf-logo.png" style="max-height: 80px;"></a>
+    <label class="dnh-copyright">© Društvo naturista Hrvatske, {{ today | date:'yyyy' }}.</label>
   </div>
 </div>
