@@ -1,0 +1,103 @@
+.dnh-logo {
+    background-image: url('../assets/logo-etalon-800px.png');
+    min-width: 300px;
+    min-height: 300px;
+    background-size: 280px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: rgba(141,149,172,0.6);
+}
+
+.title-row {
+    background-image: url('../assets/sea.jpg');
+    background-size: cover;
+}
+
+.sea {
+    background-image:
+     linear-gradient(to bottom, rgba(255,255,255,1), rgba(255,255,255,0)),
+     url('../assets/pebbles.jpg');
+    background-size: cover;
+}
+
+.welcome {
+    font-size: 2vw;
+    text-shadow:
+     -1px -1px 0 #cfc2af,
+      1px -1px 0 #cfc2af,
+     -1px  1px 0 #cfc2af,
+      1px  1px 0 #cfc2af;
+}
+
+.welcome-title {
+    font-size: 4.5vw;
+    font-weight: bold;
+    text-shadow:
+     -1px -1px 0 #cfc2af,
+      1px -1px 0 #cfc2af,
+     -1px  1px 0 #cfc2af,
+      1px  1px 0 #cfc2af;
+    color: #0a2572;
+}
+
+.list-heading {
+    font-weight: bold;
+}
+.list-content {
+    font-family: monospace;
+}
+
+.section-heading {
+    margin-top: 1em;
+    margin-left: 1em;
+    font-size: 1em;
+    font-weight: 800;
+    text-decoration: overline;
+}
+.body-text {
+    text-align: center;
+}
+.construct-top {
+    max-height: 10px;
+    min-height: 10px;
+    background-image: url('../assets/construct-top.jpg');
+    background-repeat: repeat-x;
+    background-size: contain;
+}
+.construct-middle {
+    text-align: center;
+    color: #f9b61f;
+    background-color: black;
+    font-family: monospace;
+    font-size: 0.75em;
+    font-weight: bold;
+    font-variant-caps: small-caps;
+}
+.construct-bottom {
+    max-height: 10px;
+    min-height: 10px;
+    background-image: url('../assets/construct-bottom.jpg');
+    background-repeat: repeat-x;
+    background-size: contain;
+}
+
+.dnh-link {
+    text-decoration: none;
+    color: #0a2572;
+    transition: color 0.3s ease-in;
+}
+.dnh-link:hover {
+    color: #007d2f;
+    transition: color 0.2s ease-in;
+}
+
+@media (max-width: 768px) {
+    .title-row .d-flex.flex-row.align-items-center {
+        flex-direction: column !important;
+        align-items: center;
+    }
+
+    .welcome-title {
+        font-size: 5vw;
+    }
+}
