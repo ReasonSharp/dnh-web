@@ -1,8 +1,62 @@
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        translate: 0 16px;
+    }
+}
+
+.fade-slide-in {
+    animation: fadeSlideIn 1s ease-out;
+}
+.fade-slide-out {
+    animation: fadeSlideIn 1s ease-in reverse;
+}
+
+.navbar {
+  //background-color: #aebce4 !important;
+  border-top: 3px solid #0a2572;
+}
+
+.navbar-nav .nav-link,
+.dropdown-item {
+  color: #333;
+  background-color: #cedcff;
+  transition: background-color 0.5s ease;
+  border-radius: 6px;
+  border: 1px solid #7a95f2;
+}
+
+.navbar-nav .nav-link:hover,
+.dropdown-item:hover {
+  background-color: #f1ebdb !important;
+  color: #333;
+}
+
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link:active,
+.navbar-nav .nav-link:focus,
+.dropdown-item:active,
+.dropdown-item:focus,
+.dropdown-item.active {
+  background-color: #daccb9 !important;
+  color: #333;
+}
+
+.nav-link.dropdown-toggle:hover,
+.nav-link.dropdown-toggle:focus {
+  background-color: #f1ebdb !important;
+}
+
+.nav-item {
+ width: 100%;
+ text-align: center;
+}
+
 .dnh-logo {
     background-image: url('../assets/logo-etalon-800px.png');
-    min-width: 300px;
-    min-height: 300px;
-    background-size: 280px;
+    min-width: 100px;
+    min-height: 100px;
+    background-size: 80px;
     background-position: center;
     background-repeat: no-repeat;
     background-color: rgba(141,149,172,0.6);
@@ -13,6 +67,23 @@
     background-size: cover;
 }
 
+h2 {
+    display: inline-flex;
+    font-size: 1.75em;
+    font-weight: bold;
+    gap: 0.6em;
+    &::before {
+        content: "";
+        min-width: 1em;
+        min-height: 1em;
+        background-image: url('../assets/stack-icon-size_24.png');
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        flex-shrink: 0;
+    }
+}
+
 .sea {
     background-image:
      linear-gradient(to bottom, rgba(255,255,255,1), rgba(255,255,255,0)),
@@ -20,17 +91,8 @@
     background-size: cover;
 }
 
-.welcome {
-    font-size: 2vw;
-    text-shadow:
-     -1px -1px 0 #cfc2af,
-      1px -1px 0 #cfc2af,
-     -1px  1px 0 #cfc2af,
-      1px  1px 0 #cfc2af;
-}
-
 .welcome-title {
-    font-size: 4.5vw;
+    font-size: 3vw;
     font-weight: bold;
     text-shadow:
      -1px -1px 0 #cfc2af,
@@ -106,6 +168,93 @@
       1px -1px 0 #cfc2af,
      -1px  1px 0 #cfc2af,
       1px  1px 0 #cfc2af;
+}
+
+.paragraph-right {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    min-height: 200px;
+}
+
+.paragraph-right-1 {
+    @extend .paragraph-right;
+    background-image: url('../assets/volleyball.jpg');
+}
+
+.paragraph-right-2 {
+    @extend .paragraph-right;
+    background-image: url('../assets/forest-walk.jpg');
+}
+
+.paragraph-right-3 {
+    @extend .paragraph-right;
+    background-image: url('../assets/lastavica1.jpg');
+}
+
+.paragraph-right-4 {
+    @extend .paragraph-right;
+    background-image: url('../assets/nature.jpg');
+}
+
+.frontpage-text {
+    font-size: 1.2em;
+}
+
+.datetime {
+    font-size: 0.75em;
+    font-weight: bold;
+}
+
+.news-item {
+    border-radius: 5px;
+    border: 1px solid #cfc2af;
+    padding: 10px;
+    width: 400px;
+}
+
+.news-cursive {
+    font-family: cursive;
+}
+
+.news {
+    width: 100%;
+    min-height: 200px;
+    max-height: 200px;
+    border: none;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.news.paradiso {
+    background-image: url('../assets/paradiso.jpg');
+}
+.news.skupstina {
+    background-image: url('../assets/skupstina.jpg');
+}
+
+.dropdown-menu {
+    display: none;
+    opacity: 0;
+    transform: translateY(-30px);
+    pointer-events: none;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    gap: 0.3em;
+    border: 0;
+    width: calc(100% - 0.6em);
+    background-color: rgba(255,255,255,0.5);
+    height: 0;
+    position: absolute;
+}
+.dropdown-menu.show {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    height: auto;
+    margin: 0.3em;
 }
 
 @media (max-width: 768px) {

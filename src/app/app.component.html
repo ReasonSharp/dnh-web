@@ -3,25 +3,91 @@
     <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
   </symbol>
 </svg>
-<div class="d-flex flex-column vh-100">
+<div class="d-flex flex-column">
   <div class="d-flex flex-column p-3 title-row">
     <div class="d-flex flex-row align-items-center">
       <div class="dnh-logo"></div>
       <div class="flex-grow-1 d-flex flex-column">
-        <label class="text-center welcome">Dobrodošli</label>
         <h1 class="text-center welcome-title">Društvo naturista Hrvatske</h1>
       </div>
     </div>
   </div>
   <div class="d-flex flex-column mb-3">
-    <div class="construct-top"></div>
-    <div class="construct-middle">
-      Poštovani, hvala Vam na posjeti. Ova stranica trenutno je u izradi.
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Padajući izbornik">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <ul class="navbar-nav justify-content-between w-100 me-auto mb-1 mg-lg-0 gap-3">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" (click)="toggle()">Društvo</a>
+              @if (menuState == 'open') {
+                <ul class="dropdown-menu show" animate.enter="fade-slide-in" animate.leave="fade-slide-out">
+                  <li><a class="dropdown-item" href="#">O Društvu</a></li>
+                  <li><a class="dropdown-item" href="#">Statut</a></li>
+                  <li><a class="dropdown-item" href="#">Politika privatnosti</a></li>
+                </ul>
+              }
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Kodeks ponašanja</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Postanite član</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Kontakt</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid px-lg-5 px-sm-1 mt-3 text-center">
+      <div class="row mb-4">
+        <div class="d-flex flex-column align-items-start col-12">
+          <h2>NAJNOVIJE<div class="news-cursive">iz DNH</div></h2>
+          <div class="d-flex flex-row gap-3 text-start">
+            <div class="flex-column news-item">
+              <div class="datetime">7. ožujka, 2026.</div>
+              <div class="newstext">Održana redovna sjednica DNH u starom prostoru kod Martinovke.</div>
+              <div class="news skupstina"></div>
+            </div>
+            <div class="flex-column news-item">
+              <div class="datetime">7. prosinca, 2025.</div>
+              <div class="newstext">Druženje u saunama spa & wellness hotela Paradiso.</div>
+              <div class="news paradiso"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="construct-bottom"></div>
-    <div class="container-fluid px-lg-5 px-sm-1">
-      <div class="row">
-        <div class="col-md-6">
+    <div class="container px-lg-5 px-sm-1 mt-5 text-center">
+      <div class="row mb-4 align-items-center">
+        <div class="col-md-8 frontpage-text">
+          <p>Naturizam, ponekad poznat i kao nudizam, obilježen je praksom boravka bez odjeće – bilo na plaži, u bazenu, u klubu ili turističkom naselju, kod kuće ili na mnogim drugim mjestima. Naturizam je zabavan, bezopasan, dobar za nas i prakticiraju ga milijuni ljudi diljem svijeta.</p>
+        </div>
+        <div class="col-md-4 paragraph-right-1">&nbsp;</div>
+      </div>
+      <div class="row mb-4 align-items-center">
+        <div class="col-md-8 frontpage-text">
+          <p>Naturizam nije samo golotinja. On nam pomaže da se osjećamo povezanije s prirodom te potiče poštovanje prema sebi, prema drugima i prema okolišu. Dobro utječe na naše mentalno i fizičko zdravlje i jača samopouzdanje u vlastito tijelo.</p>
+        </div>
+        <div class="col-md-4 paragraph-right-2">&nbsp;</div>
+      </div>
+      <div class="row mb-4 align-items-center">
+        <div class="col-md-8 frontpage-text">
+          <p>Naturisti širom svijeta udružili su se u nacionalne naturističke federacije, koje pokreću predani volonteri posvećeni zaštiti i promicanju prostora za naturizam i rekreaciju bez odjeće. Pridruživanjem svojoj nacionalnoj federaciji - Društvu naturista Hrvatske, aktivno podržavate naturistički pokret, a istovremeno otkrivate udrugu i događanja koja omogućuju uživanje u naturizmu tijekom cijele godine – ne samo za vrijeme godišnjeg odmora.</p>
+        </div>
+        <div class="col-md-4 paragraph-right-3">&nbsp;</div>
+      </div>
+      <div class="row mb-4 align-items-center">
+        <div class="col-md-8 frontpage-text">
+          <p><b>Zajedno stvaramo prostor za slobodu, prirodu i autentičnost.</b> Društvo naturista Hrvatske okuplja ljude koji vjeruju u poštovanje, zajedništvo i dobrobiti naturizma — tijekom cijele godine. Pridruži nam se! (link na učlanjenje)</p>
+        </div>
+        <div class="col-md-4 paragraph-right-4">&nbsp;</div>
+      </div>
+        <!-- <div class="col-md-6">
           <label class="section-heading">Podaci za kontakt</label>
           <ul class="list-group">
             <li class="list-group-item container-fluid">
@@ -43,8 +109,8 @@
               </div>
             </li>
           </ul>
-        </div>
-        <div class="col-md-6">
+        </div> -->
+        <!-- <div class="col-md-6">
           <label class="section-heading">Podaci o društvu</label>
           <ul class="list-group">
             <li class="list-group-item container-fluid">
@@ -70,8 +136,7 @@
               </div>
             </li>
           </ul>
-        </div>
-      </div>
+        </div> -->
     </div>
   </div>
   <div class="flex-grow-1 sea d-flex flex-column align-items-center justify-content-end" style="min-height: 150px;">

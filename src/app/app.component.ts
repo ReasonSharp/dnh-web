@@ -1,3 +1,4 @@
+
 import { Component } from '@angular/core';
 
 @Component({
@@ -8,4 +9,10 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'dnh-web';
   today: Date = new Date();
+  protected menuState: 'open' | 'closed' = 'closed';
+
+  toggle() {
+    if (this.menuState == 'open') this.menuState = 'closed';
+    else this.menuState = 'open';
+  }
 }
