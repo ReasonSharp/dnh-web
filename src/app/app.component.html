@@ -22,11 +22,13 @@
           <ul class="navbar-nav justify-content-between w-100 me-auto mb-1 mg-lg-0 gap-3">
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" (click)="toggle()">Društvo</a>
-              <ul class="dropdown-menu show" animate.enter="fade-slide-in" animate.leave="fade-slide-out">
-                <li><a class="dropdown-item" href="#">O Društvu</a></li>
-                <li><a class="dropdown-item" href="#">Statut</a></li>
-                <li><a class="dropdown-item" href="#">Politika privatnosti</a></li>
-              </ul>
+              @if (menuState == 'open') {
+                <ul class="dropdown-menu show" animate.enter="fade-slide-in" animate.leave="fade-slide-out">
+                  <li><a class="dropdown-item" href="#">O Društvu</a></li>
+                  <li><a class="dropdown-item" href="#">Statut</a></li>
+                  <li><a class="dropdown-item" href="#">Politika privatnosti</a></li>
+                </ul>
+              }
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Kodeks ponašanja</a>
