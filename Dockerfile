@@ -8,6 +8,7 @@ RUN npm run build
 
 FROM nginx:1.25.2
 COPY --from=build /app/dist/browser/* /usr/share/nginx/html
+COPY ./src/assets /usr/share/nginx/html/assets
 COPY nginx.conf /etc/nginx/nginx.conf
 EXPOSE 50004
 CMD [ "nginx", "-g", "daemon off;" ]
