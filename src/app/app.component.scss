@@ -1,5 +1,4 @@
 .navbar {
-  //background-color: #aebce4 !important;
   border-top: 3px solid #0a2572;
 }
 
@@ -20,16 +19,13 @@
 
 .navbar-nav .nav-link.active,
 .navbar-nav .nav-link:active,
-.navbar-nav .nav-link:focus,
 .dropdown-item:active,
-.dropdown-item:focus,
 .dropdown-item.active {
   background-color: #daccb9 !important;
   color: #333;
 }
 
-.nav-link.dropdown-toggle:hover,
-.nav-link.dropdown-toggle:focus {
+.nav-link.dropdown-toggle:hover {
   background-color: #f1ebdb !important;
 }
 
