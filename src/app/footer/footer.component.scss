@@ -1,0 +1,24 @@
+.sea {
+    background-image:
+     linear-gradient(to bottom, rgba(255,255,255,1), rgba(255,255,255,0)),
+     url('/assets/pebbles.jpg');
+    background-size: cover;
+}
+
+.dnh-copyright {
+    font-size: 0.75em;
+    text-shadow:
+     -1px -1px 0 #cfc2af,
+      1px -1px 0 #cfc2af,
+     -1px  1px 0 #cfc2af,
+      1px  1px 0 #cfc2af;
+}
+
+.dnh-inf {
+    text-align: center;
+    text-shadow:
+     -1px -1px 0 #cfc2af,
+      1px -1px 0 #cfc2af,
+     -1px  1px 0 #cfc2af,
+      1px  1px 0 #cfc2af;
+}

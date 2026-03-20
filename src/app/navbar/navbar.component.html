@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Padajući izbornik">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav justify-content-between w-100 me-auto mb-1 mg-lg-0 gap-3">
+        <li #dropdownMenu class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" role="button" (click)="toggle()">Društvo</a>
+          @if (menuState == 'open') {
+            <ul class="dropdown-menu show" animate.enter="fade-slide-in" animate.leave="fade-slide-out">
+              <li><a class="dropdown-item" (click)="navigate('about')" [class.active]="activeLink == 'about'">O Društvu</a></li>
+              <li><a class="dropdown-item" (click)="navigate('statut')">Statut</a></li>
+              <li><a class="dropdown-item" (click)="navigate('privacy-policy')">Politika privatnosti</a></li>
+            </ul>
+          }
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="navigate('codex')">Kodeks ponašanja</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="navigate('join')">Postanite član</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="navigate('contact')">Kontakt</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

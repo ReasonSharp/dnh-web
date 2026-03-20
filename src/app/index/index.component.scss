@@ -1,0 +1,121 @@
+.news-item {
+    border-radius: 5px;
+    border: 1px solid #cfc2af;
+    padding: 10px;
+    width: 400px;
+    flex: 0 0 85vw;
+    width: 85vw;
+    max-width: 400px;
+}
+
+.news-cursive {
+    font-family: cursive;
+}
+
+.news {
+    width: 100%;
+    min-height: 200px;
+    max-height: 200px;
+    border: none;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: bottom;
+}
+.news.paradiso {
+    background-image: url('/assets/paradiso.jpg');
+}
+.news.skupstina {
+    background-image: url('/assets/skupstina.jpg');
+}
+.news.eunat {
+    background-image: url('/assets/eunat.jpg');
+}
+.news.jarun {
+    background-image: url('/assets/jarun.jpg');
+}
+
+.news-scroller {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+  padding-bottom: 0.5rem;
+  width: calc(100vw - var(--bs-gutter-x));
+}
+
+@media (min-width: 992px) {
+    .news-scroller {
+        width: calc(100vw - 6rem);
+    }
+}
+
+.news-scroller::-webkit-scrollbar {
+  height: 8px;
+}
+
+.news-scroller::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.news-scroller::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.news-scroller::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.paragraph-right {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    min-height: 200px;
+}
+
+.paragraph-right-1 {
+    @extend .paragraph-right;
+    background-image: url('/assets/volleyball.jpg');
+}
+
+.paragraph-right-2 {
+    @extend .paragraph-right;
+    background-image: url('/assets/forest-walk.jpg');
+}
+
+.paragraph-right-3 {
+    @extend .paragraph-right;
+    background-image: url('/assets/lastavica1.jpg');
+}
+
+.paragraph-right-4 {
+    @extend .paragraph-right;
+    background-image: url('/assets/nature.jpg');
+}
+
+.frontpage-text {
+    font-size: 1.2em;
+}
+
+h2 {
+    display: inline-flex;
+    font-size: 1.75em;
+    font-weight: bold;
+    gap: 0.6em;
+    &::before {
+        content: "";
+        min-width: 1em;
+        min-height: 1em;
+        background-image: url('/assets/stack-icon-size_24.png');
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        flex-shrink: 0;
+    }
+}
+
+.datetime {
+    font-size: 0.75em;
+    font-weight: bold;
+}
