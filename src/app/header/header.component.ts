@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -11,17 +11,25 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class HeaderComponent {
   @ViewChild('dropdownMenu') dropdownMenu!: ElementRef;
   protected menuState: 'open' | 'closed' = 'closed';
-  protected activeLink: string = 'home';
+  protected activeLink: string = '';
+  protected needsBurger: boolean = window.innerWidth < 992;
+  protected burgerState: string = 'collapsed';
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(private router: Router) {
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.needsBurger = window.innerWidth < 992;
   }
 
   navigate(where: string) {
     if (this.activeLink != where) {
       this.activeLink = where;
-      if (where == "home") this.router.navigate([ '' ]);
+      if (where == 'home') this.router.navigate([ "" ]);
       else this.router.navigate([ where ]);
       this.menuState = "closed";
+      if (this.needsBurger) this.burgerState = 'collapsed';
     }
   }
 
@@ -33,5 +41,13 @@ export class HeaderComponent {
   onClick(event: Event) {
     if (!this.dropdownMenu.nativeElement.contains(event.target))
       this.menuState = 'closed';
+  }
+
+  clickBurger() {
+    console.log('burger');
+    if (this.burgerState == 'collapsed') this.burgerState = 'expanded';
+    else this.burgerState = 'collapsed';
+    console.log(this.burgerState);
+    console.log(`collapsed ${!this.needsBurger && this.burgerState == 'collapsed'}`)
   }
 }

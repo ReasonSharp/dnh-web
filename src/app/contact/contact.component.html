@@ -1,25 +1,19 @@
 <div class="container">
     <h1>Kontakt</h1>
     <div class="d-flex flex-column mx-3">
-        <div class="row">
-            <div class="col-lg-2 col-sm-3">Predsjednica</div>
-            <div class="col-lg-10 col-sm-9">Snježana Krušelj</div>
-        </div>
-        <div class="row">
-            <div class="col-lg-2 col-sm-3">Tajnik</div>
-            <div class="col-lg-10 col-sm-7">Saša Pajić</div>
-        </div>
-        <div class="row">
-            <div class="col-lg-2 col-sm-3">Sjedište</div>
-            <div class="col-lg-10 col-sm-7">Zelinska 5<br>10000 Zagreb</div>
-        </div>
-        <div class="row">
-            <div class="col-lg-2 col-sm-3">Telefon</div>
-            <div class="col-lg-10 col-sm-7">+385 (0)98 973 6156 (Adrian Kučić)</div>
-        </div>
-        <div class="row">
-            <div class="col-lg-2 col-sm-3">e-Mail</div>
-            <div class="col-lg-10 col-sm-7"><a href="mailto:dnh@dnh.hr">dnh@dnh.hr</a></div>
-        </div>
+        @for (item of functions; track item) {
+            <div class="row">
+                <div class="col-lg-2 col-sm-3">{{ item.title }} </div>
+                <div class="col-lg-10 col-sm-9">
+                    @for (subitem of item.items; track subitem) {
+                        @if (subitem.link) {
+                            <a href="{{ subitem.link }}">{{ subitem.value }}</a><br>
+                        } @else {
+                            {{ subitem.value }}<br>
+                        }
+                    }
+                </div>
+            </div>
+        }
     </div>
 </div>

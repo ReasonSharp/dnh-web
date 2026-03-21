@@ -1,5 +1,5 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -12,8 +12,16 @@ export class NavbarComponent {
   @ViewChild('dropdownMenu') dropdownMenu!: ElementRef;
   protected menuState: 'open' | 'closed' = 'closed';
   protected activeLink: string = 'home';
+  protected needsBurger: boolean = window.innerWidth < 992;
+  protected burgerState: string = 'collapsed';
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(private router: Router) {
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.needsBurger = window.innerWidth < 992;
+    console.log(this.needsBurger);
   }
 
   navigate(where: string) {
@@ -21,6 +29,7 @@ export class NavbarComponent {
       this.activeLink = where;
       this.router.navigate([ where ]);
       this.menuState = "closed";
+      if (this.needsBurger) this.burgerState = 'collapsed';
     }
   }
 
@@ -32,5 +41,11 @@ export class NavbarComponent {
   onClick(event: Event) {
     if (!this.dropdownMenu.nativeElement.contains(event.target))
       this.menuState = 'closed';
+  }
+
+  clickBurger() {
+    console.log('burger');
+    if (this.burgerState == 'collapsed') this.burgerState = 'expanded';
+    else this.burgerState = 'collapsed';
   }
 }

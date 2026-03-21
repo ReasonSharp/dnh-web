@@ -1,9 +1,9 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Padajući izbornik">
+    <button class="navbar-toggler" type="button" [class.collapsed]="!needsBurger && burgerState == 'collapsed'" (click)="clickBurger()">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarContent">
+    <div class="collapse navbar-collapse" [class.show]="!needsBurger && burgerState == 'expanded'">
       <ul class="navbar-nav justify-content-between w-100 me-auto mb-1 mg-lg-0 gap-3">
         <li #dropdownMenu class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" role="button" (click)="toggle()">Društvo</a>

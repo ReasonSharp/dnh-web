@@ -5,26 +5,13 @@
           <h2>NAJNOVIJE<div class="news-cursive">iz DNH</div></h2>
           <div class="news-scroller">
             <div class="d-flex flex-row gap-3 text-start">
-              <div class="d-flex flex-column news-item">
-                <div class="datetime">7. ožujka, 2026.</div>
-                <div class="newstext flex-grow-1">Održana redovna sjednica DNH u starom prostoru kod Martinovke.</div>
-                <div class="news skupstina"></div>
-              </div>
-              <div class="d-flex flex-column news-item">
-                <div class="datetime">7. prosinca, 2025.</div>
-                <div class="newstext flex-grow-1">Druženje u saunama spa & wellness hotela Paradiso.</div>
-                <div class="news paradiso"></div>
-              </div>
-              <div class="d-flex flex-column news-item">
-                <div class="datetime">2. - 5. listopada, 2025.</div>
-                <div class="newstext flex-grow-1">DNH sudjelovao na sastanku EuNat-a.</div>
-                <div class="news eunat"></div>
-              </div>
-              <div class="d-flex flex-column news-item">
-                <div class="datetime">6. rujna, 2025.</div>
-                <div class="newstext flex-grow-1">Proslavljen dan naturizma na Jarunu.</div>
-                <div class="news jarun"></div>
-              </div>
+              @for (item of newsItems; track item) {
+                <div class="d-flex flex-column news-item">
+                  <div class="datetime">{{ item.date }}</div>
+                  <div class="newstext flex-grow-1">{{ item.blurb }}</div>
+                  <div class="news" style="background-image: url('{{ item.imageURL }}');"></div>
+                </div>
+              }
             </div>
           </div>
         </div>
@@ -55,55 +42,5 @@
         </div>
         <div class="col-md-4 paragraph-right-4">&nbsp;</div>
       </div>
-        <!-- <div class="col-md-6">
-          <label class="section-heading">Podaci za kontakt</label>
-          <ul class="list-group">
-            <li class="list-group-item container-fluid">
-              <div class="row">
-                <label class="col-3 list-heading">Predsjednik</label>
-                <label class="col-9 list-content text-nowrap">Snježana Krušelj<br>+385 98 454 040</label>
-              </div>
-            </li>
-            <li class="list-group-item container-fluid">
-              <div class="row">
-                <label class="col-3 list-heading">Tajnik</label>
-                <label class="col-9 list-content text-nowrap">Saša Pajić<br>+385 98 446 788</label>
-              </div>
-            </li>
-            <li class="list-group-item container-fluid">
-              <div class="row">
-                <label class="col-3 list-heading">Email</label>
-                <label class="col-9 list-content"><a href="mailto:dnh@dnh.hr" class="dnh-link">dnh&#64;dnh.hr</a></label>
-              </div>
-            </li>
-          </ul>
-        </div> -->
-        <!-- <div class="col-md-6">
-          <label class="section-heading">Podaci o društvu</label>
-          <ul class="list-group">
-            <li class="list-group-item container-fluid">
-              <div class="row">
-                <label class="col-3 list-heading">Adresa</label>
-                <label class="col-9 list-content">Zelinska 5, 10000 Zagreb</label>
-              </div>
-            </li>
-            <li class="list-group-item container-fluid">
-              <div class="row">
-                <label class="col-3 list-heading">OIB</label>
-                <label class="col-9 list-content">58155050871</label>
-                <label class="col-3 list-heading">MB</label>
-                <label class="col-9 list-content">03233545</label>
-              </div>
-            </li>
-            <li class="list-group-item container-fluid">
-              <div class="row">
-                <label class="col-3 list-heading">IBAN</label>
-                <label class="col-9 list-content">HR6923600001103207288</label>
-                <label class="col-3 list-heading">SWIFT</label>
-                <label class="col-9 list-content">ZABAHR2X</label>
-              </div>
-            </li>
-          </ul>
-        </div> -->
     </div>
   </div>
