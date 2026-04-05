@@ -6,6 +6,22 @@
     flex: 0 0 85vw;
     width: 85vw;
     max-width: 400px;
+    text-decoration: none;
+}
+
+a.news-item {
+    text-decoration: none;
+    color: black
+}
+
+.news-item:hover {
+    background-color: #eee;
+    border-color: #c9b29b;
+}
+
+a.news-item:hover {
+    background-color: #dff6ff;
+    border-color: blue;
 }
 
 .news-cursive {
