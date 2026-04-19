@@ -7,19 +7,19 @@
        <div class="news-scroller">
         <div class="d-flex flex-row gap-3 text-start">
          @for (item of announcements; track item) {
-         @if (item.link) {
-         <a class="d-flex flex-column news-item" href="{{ item.link }}" target="_blank">
-          <div class="datetime">{{ item.date }}</div>
-          <div class="newstext flex-grow-1">{{ item.blurb }}</div>
-          <div class="news" style="background-image: url('{{ item.imageURL }}');"></div>
-         </a>
-         } @else {
-         <div class="d-flex flex-column news-item">
-          <div class="datetime">{{ item.date }}</div>
-          <div class="newstext flex-grow-1">{{ item.blurb }}</div>
-          <div class="news" style="background-image: url('{{ item.imageURL }}');"></div>
-         </div>
-         }
+          @if (item.link) {
+          <a class="d-flex flex-column news-item" href="{{ item.link }}" target="_blank">
+           <div class="datetime">{{ item.date | date:'longDate' }}</div>
+           <div class="newstext flex-grow-1">{{ item.blurb }}</div>
+           <div class="news" style="background-image: url('{{ item.imageURL }}');"></div>
+          </a>
+          } @else {
+          <div class="d-flex flex-column news-item">
+           <div class="datetime">{{ item.date }}</div>
+           <div class="newstext flex-grow-1">{{ item.blurb }}</div>
+           <div class="news" style="background-image: url('{{ item.imageURL }}');"></div>
+          </div>
+          }
          }
         </div>
        </div>
