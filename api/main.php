@@ -11,6 +11,7 @@ if ($type !== 'news' && $type !== 'announcements') {
  exit;
 }
 
+/*
 $newsItems = [
  [ 'date' => "26. ožujka, 2026.", 'blurb' => "Pogledajte novi video Nick&Lins o hrvatskim naturističkim plažama.", 'imageURL' => "/assets/nicklins.png", 'link' => "https://www.youtube.com/watch?v=deMVuzba9lI" ],
  [ 'date' => "7. ožujka, 2026.", 'blurb' => "Održana redovna sjednica DNH u starom prostoru kod Martinovke.", 'imageURL' => "/assets/skupstina.jpg" ],
@@ -26,7 +27,37 @@ $announcements = [
 ];
 
 $data = $type === 'news' ? $newsItems : $announcements;
+*/
 
-echo json_encode($data, JSON_UNESCAPED_UNICODE);
+$host = $_ENV['DB_HOST'] ?? $_SERVER['DB_HOST'] ?? getenv('DB_HOST') ?? null;
+$name = $_ENV['DB_NAME'] ?? $_SERVER['DB_NAME'] ?? getenv('DB_NAME') ?? null;
+$user = $_ENV['DB_USER'] ?? $_SERVER['DB_USER'] ?? getenv('DB_USER') ?? null;
+$pass = $_ENV['DB_PASS'] ?? $_SERVER['DB_PASS'] ?? getenv('DB_PASS') ?? null;
+if (!$host || !$name || !$user || !$pass) {
+ http_response_code(500);
+ echo json_encode([
+  'success' => false,
+  'message' => 'Neispravno konfigurirana baza podataka.'
+ ], JSON_UNESCAPED_UNICODE);
+ exit;
+}
+
+$pdo = new PDO(
+ 'mysql:host='.$host.';dbname='.$name.';charset=utf8mb4',
+ $user,
+ $pass,
+ [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+);
+
+$table = $type === 'news' ? 'news' : 'announcement';
+$stmt = $pdo->query("SELECT `date`, `blurb`, `imageURL`, `link`, `body`, `author` FROM `$table` ORDER BY `".$table."ID` DESC");
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Strip null values for optional fields so the JSON matches the previous shape
+$data = array_map(function ($row) {
+ return array_filter($row, fn($v) => $v !== null);
+}, $data);
+
+echo json_encode(array_values($data), JSON_UNESCAPED_UNICODE);
 exit;
 ?>
