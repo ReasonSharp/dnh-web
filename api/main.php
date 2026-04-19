@@ -21,6 +21,7 @@ $newsItems = [
 ];
 
 $announcements = [
+ [ 'date' => "19. travnja, 2026.", 'blurb' => "Primamo prijave za 54. susrete Alpe Adria od 18. do 21. lipnja, 2026.", 'imageURL' => "/assets/alpe-adria.png", 'link' => "mailto:dnh@dnh.hr" ],
  [ 'date' => "5. travnja, 2026.", 'blurb' => "Druženje mladih od 27. lipnja do 1. srpnja u Gironi.", 'imageURL' => "/assets/youth-gathering.png", 'link' => "https://fienta.com/inf-fni-2024-international-naturist-youth-gathering-171864?fbclid=IwT01FWAQta6lleHRuA2FlbQIxMABzcnRjBmFwcF9pZAwzNTA2ODU1MzE3MjgAAR6HARG-j_VOoJJF5HD1djBdQy-eG_Aq5P1wIsf0tlVQ4U7EynGW7g3qzBkujg_aem_oJL9dgiZvTI9YaD0FVG-hg" ]
 ];
 
