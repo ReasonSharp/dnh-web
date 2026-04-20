@@ -27,4 +27,8 @@ export class DataService {
   this.announcements.next(await firstValueFrom(this.http.get<IAnnouncement[]>("/api/main.php?type=announcements")));
   return this.announcements.getValue();
  }
+
+ trackVisit(page: string) {
+  this.http.get(`/api/counter.php?page=${encodeURIComponent(page)}`).subscribe({ error: () => {} });
+ }
 }

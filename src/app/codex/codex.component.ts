@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DataService } from 'src/services/data.service';
 
 @Component({
   selector: 'app-codex',
@@ -6,6 +7,10 @@ import { Component } from '@angular/core';
   templateUrl: './codex.component.html',
   styleUrl: './codex.component.scss',
 })
-export class CodexComponent {
+export class CodexComponent implements OnInit {
+ constructor(private dataService: DataService) { }
 
+ ngOnInit() {
+  this.dataService.trackVisit('/codex');
+ }
 }

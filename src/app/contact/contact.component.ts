@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DataService } from 'src/services/data.service';
 
 @Component({
   selector: 'app-contact',
@@ -7,7 +8,7 @@ import { Component } from '@angular/core';
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss',
 })
-export class ContactComponent {
+export class ContactComponent implements OnInit {
  functions = [
   { title: "Predsjednica", items: [ { value: "Snježana Krušelj", link: null } ] },
   { title: "Tajnik", items: [ { value: "Saša Pajić", link: null } ] },
@@ -15,4 +16,10 @@ export class ContactComponent {
   { title: "Telefon", items: [ { value: "+385 (0)98 973 6156 (Adrian Kučić)", link: null } ] },
   { title: "e-Mail", items: [ { value: "dnh@dnh.hr", link: "mailto:dnh@dnh.hr" } ] }
  ];
+
+ constructor(private dataService: DataService) { }
+
+ ngOnInit() {
+  this.dataService.trackVisit('/contact');
+ }
 }

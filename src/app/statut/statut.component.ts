@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DataService } from 'src/services/data.service';
 
 @Component({
   selector: 'app-statut',
@@ -6,6 +7,10 @@ import { Component } from '@angular/core';
   templateUrl: './statut.component.html',
   styleUrl: './statut.component.scss',
 })
-export class StatutComponent {
+export class StatutComponent implements OnInit {
+ constructor(private dataService: DataService) { }
 
+ ngOnInit() {
+  this.dataService.trackVisit('/statut');
+ }
 }

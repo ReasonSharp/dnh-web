@@ -17,6 +17,7 @@ export class IndexComponent implements OnInit {
  constructor(private dataService: DataService) { }
 
  ngOnInit() {
+  this.dataService.trackVisit('/');
   this.dataService.newsItems.subscribe(items => this.newsItems = items);
   this.dataService.announcements.subscribe(items => this.announcements = items);
  }

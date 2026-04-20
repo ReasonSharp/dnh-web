@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DataService } from 'src/services/data.service';
 
 @Component({
   selector: 'app-membership',
@@ -6,6 +7,10 @@ import { Component } from '@angular/core';
   templateUrl: './membership.component.html',
   styleUrl: './membership.component.scss',
 })
-export class MembershipComponent {
+export class MembershipComponent implements OnInit {
+ constructor(private dataService: DataService) { }
 
+ ngOnInit() {
+  this.dataService.trackVisit('/join');
+ }
 }
