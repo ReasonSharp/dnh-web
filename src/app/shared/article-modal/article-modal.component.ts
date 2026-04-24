@@ -19,6 +19,9 @@ export class ArticleModalComponent implements OnInit, OnDestroy {
   ngOnInit()    { document.body.style.overflow = 'hidden'; }
   ngOnDestroy() { document.body.style.overflow = ''; }
 
+  @HostListener('click')
+  onBackdropClick() { this.close(); }
+
   @HostListener('document:keydown.escape')
   onEsc() { this.close(); }
 
