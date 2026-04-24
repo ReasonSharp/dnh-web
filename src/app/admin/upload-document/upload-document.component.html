@@ -1,0 +1,11 @@
+<div class="p-4">
+  <h4 class="mb-4">Upload dokumenta</h4>
+  <div class="mb-3">
+    <label class="form-label">Odaberi PDF dokument</label>
+    <input type="file" class="form-control" accept=".pdf,application/pdf" (change)="onFileSelected($event)">
+  </div>
+  <button class="btn btn-primary" [disabled]="!selectedFile" (click)="uploadFile()">Upload</button>
+  @if (message) {
+    <div class="alert mt-3" [class]="success ? 'alert-success' : 'alert-danger'">{{ message }}</div>
+  }
+</div>

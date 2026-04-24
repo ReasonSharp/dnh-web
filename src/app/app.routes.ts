@@ -10,6 +10,7 @@ import { ContactComponent } from './contact/contact.component';
 import { AdminComponent } from './admin/admin.component';
 import { ChangePasswordComponent } from './admin/change-password/change-password.component';
 import { UploadImageComponent } from './admin/upload-image/upload-image.component';
+import { UploadDocumentComponent } from './admin/upload-document/upload-document.component';
 import { LogoutComponent } from './admin/logout/logout.component';
 import { NewsItemResolver } from 'src/services/resolvers/news-item-resolver.service';
 import { AnnouncementResolver } from 'src/services/resolvers/announcement-resolver.service';
@@ -27,6 +28,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'upload', pathMatch: 'full' },
       { path: 'upload', component: UploadImageComponent },
+      { path: 'upload-document', component: UploadDocumentComponent },
       { path: 'change-password', component: ChangePasswordComponent },
       { path: 'logout', component: LogoutComponent }
     ]
