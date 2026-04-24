@@ -42,8 +42,14 @@
   }
   @if (mode === 'body') {
     <div class="mb-3">
+      <label class="form-label">Naslov članka</label>
+      <input type="text" class="form-control" [(ngModel)]="title" name="title" placeholder="Naslov (neobavezno)">
+    </div>
+    <div class="mb-3">
       <label class="form-label">Članak</label>
-      <textarea class="form-control" [(ngModel)]="body" name="body" rows="6"></textarea>
+      <div class="quill-wrapper">
+        <quill-editor [(ngModel)]="body" name="body" [modules]="quillModules" (onEditorCreated)="onEditorCreated($event)"></quill-editor>
+      </div>
     </div>
   }
 

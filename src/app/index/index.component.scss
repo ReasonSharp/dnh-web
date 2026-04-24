@@ -24,6 +24,15 @@ a.news-item:hover {
     border-color: blue;
 }
 
+.news-item-article {
+    cursor: pointer;
+}
+
+.news-item-article:hover {
+    background-color: #dff6ff;
+    border-color: blue;
+}
+
 .news-cursive {
     font-family: cursive;
 }

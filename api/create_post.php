@@ -19,6 +19,7 @@ $type     = $input['type']     ?? '';
 $blurb    = trim($input['blurb']    ?? '');
 $imageURL = trim($input['imageURL'] ?? '');
 $link     = trim($input['link']     ?? '') ?: null;
+$title    = trim($input['title']    ?? '') ?: null;
 $body     = trim($input['body']     ?? '') ?: null;
 
 if (!in_array($type, ['news', 'announcement'])) {
@@ -56,9 +57,9 @@ $author = $row['name'] ?? $row['username'];
 
 $table = $type === 'news' ? 'news' : 'announcement';
 $stmt  = $pdo->prepare(
- "INSERT INTO `$table` (`date`, `blurb`, `imageURL`, `link`, `body`, `author`) VALUES (?, ?, ?, ?, ?, ?)"
+ "INSERT INTO `$table` (`date`, `blurb`, `imageURL`, `link`, `title`, `body`, `author`) VALUES (?, ?, ?, ?, ?, ?, ?)"
 );
-$stmt->execute([date('Y-m-d'), $blurb, $imageURL, $link, $body, $author]);
+$stmt->execute([date('Y-m-d'), $blurb, $imageURL, $link, $title, $body, $author]);
 
 echo json_encode(['success' => true, 'message' => 'Objava uspješno dodana.']);
 ?>

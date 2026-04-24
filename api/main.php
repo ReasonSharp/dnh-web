@@ -50,7 +50,7 @@ $pdo = new PDO(
 );
 
 $table = $type === 'news' ? 'news' : 'announcement';
-$stmt = $pdo->query("SELECT `date`, `blurb`, `imageURL`, `link`, `body`, `author` FROM `$table` ORDER BY `".$table."ID` DESC;");
+$stmt = $pdo->query("SELECT `date`, `blurb`, `imageURL`, `link`, `title`, `body`, `author` FROM `$table` ORDER BY `".$table."ID` DESC;");
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Strip null values for optional fields so the JSON matches the previous shape

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { QuillEditorComponent } from 'ngx-quill';
 import { ImagePickerComponent } from '../image-picker/image-picker.component';
 
 interface PostItem {
@@ -10,13 +11,14 @@ interface PostItem {
   blurb: string;
   imageURL: string | null;
   link: string | null;
+  title: string | null;
   body: string | null;
 }
 
 @Component({
   selector: 'app-edit-announcement',
   standalone: true,
-  imports: [FormsModule, ImagePickerComponent],
+  imports: [FormsModule, ImagePickerComponent, QuillEditorComponent],
   templateUrl: './edit-announcement.component.html',
   styleUrl: './edit-announcement.component.scss'
 })
@@ -27,13 +29,36 @@ export class EditAnnouncementComponent implements OnInit {
   imageUrl = '';
   mode: 'none' | 'link' | 'body' = 'none';
   link = '';
+  title = '';
   body = '';
   assetImageWarning = false;
   message = '';
   success = false;
   loading = true;
 
+  quillModules = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ script: 'sub' }, { script: 'super' }],
+      [{ header: [1, 2, 3, false] }],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      ['link', 'video'],
+      ['clean'],
+    ],
+  };
+
   constructor(private http: HttpClient) {}
+
+  onEditorCreated(editor: any) {
+    editor.getModule('toolbar').addHandler('video', () => {
+      const url = prompt('Unesite URL videa:');
+      if (!url) return;
+      const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
+      const embedUrl = match ? `https://www.youtube.com/embed/${match[1]}` : url;
+      const range = editor.getSelection(true);
+      editor.insertEmbed(range.index, 'video', embedUrl, 'user');
+    });
+  }
 
   async ngOnInit() {
     try {
@@ -62,14 +87,17 @@ export class EditAnnouncementComponent implements OnInit {
     if (post.link) {
       this.mode = 'link';
       this.link = post.link;
-      this.body = post.body ?? '';
+      this.title = '';
+      this.body = '';
     } else if (post.body) {
       this.mode = 'body';
+      this.title = post.title ?? '';
       this.body = post.body;
-      this.link = post.link ?? '';
+      this.link = '';
     } else {
       this.mode = 'none';
       this.link = '';
+      this.title = '';
       this.body = '';
     }
   }
@@ -96,6 +124,7 @@ export class EditAnnouncementComponent implements OnInit {
             blurb: this.blurb,
             imageURL: this.imageUrl,
             link: this.mode === 'link' ? this.link || null : null,
+            title: this.mode === 'body' ? this.title || null : null,
             body: this.mode === 'body' ? this.body || null : null,
           },
           { withCredentials: true }
@@ -109,6 +138,7 @@ export class EditAnnouncementComponent implements OnInit {
           post.blurb = this.blurb;
           post.imageURL = this.imageUrl;
           post.link = this.mode === 'link' ? this.link || null : null;
+          post.title = this.mode === 'body' ? this.title || null : null;
           post.body = this.mode === 'body' ? this.body || null : null;
           this.assetImageWarning = false;
         }

@@ -20,6 +20,7 @@ $id       = (int) ($input['id'] ?? 0);
 $blurb    = trim($input['blurb']    ?? '');
 $imageURL = trim($input['imageURL'] ?? '');
 $link     = trim($input['link']     ?? '') ?: null;
+$title    = trim($input['title']    ?? '') ?: null;
 $body     = trim($input['body']     ?? '') ?: null;
 
 if (!in_array($type, ['news', 'announcement'])) {
@@ -54,9 +55,9 @@ $table = $type === 'news' ? 'news' : 'announcement';
 $idCol = $type === 'news' ? 'newsID' : 'announcementID';
 
 $stmt = $pdo->prepare(
- "UPDATE `$table` SET `blurb` = ?, `imageURL` = ?, `link` = ?, `body` = ? WHERE `$idCol` = ?"
+ "UPDATE `$table` SET `blurb` = ?, `imageURL` = ?, `link` = ?, `title` = ?, `body` = ? WHERE `$idCol` = ?"
 );
-$stmt->execute([$blurb, $imageURL, $link, $body, $id]);
+$stmt->execute([$blurb, $imageURL, $link, $title, $body, $id]);
 
 echo json_encode(['success' => true, 'message' => 'Promjene uspješno spremljene.']);
 ?>

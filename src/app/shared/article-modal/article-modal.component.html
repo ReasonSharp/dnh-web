@@ -1,0 +1,18 @@
+<div class="backdrop" (click)="close()"></div>
+
+<div class="dialog modal-dialog modal-lg modal-dialog-scrollable" role="dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">{{ item.title || item.blurb }}</h5>
+      <button type="button" class="btn-close" (click)="close()" aria-label="Zatvori"></button>
+    </div>
+    <div class="modal-body">
+      @if (item.author || item.date) {
+        <p class="text-muted small mb-4">
+          {{ item.date }}@if (item.author) { &nbsp;·&nbsp;{{ item.author }} }
+        </p>
+      }
+      <div class="ql-editor article-body" [innerHTML]="safeBody"></div>
+    </div>
+  </div>
+</div>

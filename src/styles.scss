@@ -1,1 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'quill/dist/quill.snow.css';
+
+// Quill editor height in admin forms
+.quill-wrapper .ql-container {
+  min-height: 200px;
+}
+
+// Quill content rendered outside the editor (article modal)
+.ql-editor.article-body {
+  padding: 0;
+  height: auto;
+  overflow: visible;
+  white-space: normal;
+
+  iframe {
+    max-width: 100%;
+  }
+}
