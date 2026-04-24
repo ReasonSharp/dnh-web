@@ -12,6 +12,7 @@ import { ChangePasswordComponent } from './admin/change-password/change-password
 import { UploadImageComponent } from './admin/upload-image/upload-image.component';
 import { UploadDocumentComponent } from './admin/upload-document/upload-document.component';
 import { LogoutComponent } from './admin/logout/logout.component';
+import { EditDetailsComponent } from './admin/edit-details/edit-details.component';
 import { NewsItemResolver } from 'src/services/resolvers/news-item-resolver.service';
 import { AnnouncementResolver } from 'src/services/resolvers/announcement-resolver.service';
 
@@ -30,6 +31,7 @@ export const routes: Routes = [
       { path: 'upload', component: UploadImageComponent },
       { path: 'upload-document', component: UploadDocumentComponent },
       { path: 'change-password', component: ChangePasswordComponent },
+      { path: 'edit-details', component: EditDetailsComponent },
       { path: 'logout', component: LogoutComponent }
     ]
   }
