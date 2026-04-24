@@ -1,0 +1,29 @@
+<div class="p-4">
+  <h4 class="mb-4">Nova obavijest</h4>
+
+  <div class="mb-3">
+    <label class="form-label">Tagline <span class="text-danger">*</span></label>
+    <input type="text" class="form-control" [(ngModel)]="blurb" name="blurb" placeholder="Kratki opis obavijesti">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Slika <span class="text-danger">*</span></label>
+    <app-image-picker [(selectedUrl)]="imageUrl"></app-image-picker>
+    @if (imageUrl) {
+      <div class="mt-2">
+        <img [src]="imageUrl" class="img-thumbnail selected-preview" alt="Odabrana slika">
+      </div>
+    }
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Članak <span class="text-muted small">(neobavezno)</span></label>
+    <textarea class="form-control" [(ngModel)]="body" name="body" rows="6"></textarea>
+  </div>
+
+  <button type="button" class="btn btn-primary" (click)="submit()">Dodaj obavijest</button>
+
+  @if (message) {
+    <div class="alert mt-3" [class]="success ? 'alert-success' : 'alert-danger'">{{ message }}</div>
+  }
+</div>

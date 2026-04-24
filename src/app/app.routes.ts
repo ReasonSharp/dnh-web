@@ -13,6 +13,8 @@ import { UploadImageComponent } from './admin/upload-image/upload-image.componen
 import { UploadDocumentComponent } from './admin/upload-document/upload-document.component';
 import { LogoutComponent } from './admin/logout/logout.component';
 import { EditDetailsComponent } from './admin/edit-details/edit-details.component';
+import { CreateNewsComponent } from './admin/create-news/create-news.component';
+import { CreateAnnouncementComponent } from './admin/create-announcement/create-announcement.component';
 import { NewsItemResolver } from 'src/services/resolvers/news-item-resolver.service';
 import { AnnouncementResolver } from 'src/services/resolvers/announcement-resolver.service';
 
@@ -30,6 +32,8 @@ export const routes: Routes = [
       { path: '', redirectTo: 'upload', pathMatch: 'full' },
       { path: 'upload', component: UploadImageComponent },
       { path: 'upload-document', component: UploadDocumentComponent },
+      { path: 'create-news', component: CreateNewsComponent },
+      { path: 'create-announcement', component: CreateAnnouncementComponent },
       { path: 'change-password', component: ChangePasswordComponent },
       { path: 'edit-details', component: EditDetailsComponent },
       { path: 'logout', component: LogoutComponent }

@@ -1,0 +1,25 @@
+@if (loading) {
+  <div class="text-muted py-2">Učitavanje slika...</div>
+} @else if (images.length === 0) {
+  <div class="text-muted py-2">Nema uploadanih slika.</div>
+} @else {
+  <div class="row g-2">
+    @for (img of images; track img.imageID) {
+      <div class="col-6 col-sm-4 col-md-3">
+        <div class="picker-thumb" [class.selected]="selectedUrl === img.url" (click)="select(img.url)">
+          <img [src]="img.url" alt="">
+        </div>
+      </div>
+    }
+  </div>
+  @if (ratioError) {
+    <div class="alert alert-warning mt-2 py-2 small">{{ ratioError }}</div>
+  }
+  @if (totalPages > 1) {
+    <div class="d-flex justify-content-between align-items-center mt-3">
+      <button type="button" class="btn btn-sm btn-outline-secondary" [disabled]="page === 1" (click)="prev()">&#8249; Prethodna</button>
+      <span class="text-muted small">{{ page }} / {{ totalPages }}</span>
+      <button type="button" class="btn btn-sm btn-outline-secondary" [disabled]="page === totalPages" (click)="next()">Sljedeća &#8250;</button>
+    </div>
+  }
+}

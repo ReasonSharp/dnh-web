@@ -7,7 +7,7 @@ COPY ./src ./src
 RUN npm run build
 
 FROM nginx:1.29.7
-RUN apt update && apt install -y php-fpm php-mysql php-curl
+RUN apt update && apt install -y php-fpm php-mysql php-curl php-gd
 COPY --from=build /app/dist/dnh-web/browser/* /usr/share/nginx/html
 COPY ./src/assets /usr/share/nginx/html/assets
 COPY ./api /usr/share/nginx/html/api

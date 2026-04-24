@@ -1,0 +1,23 @@
+.picker-thumb {
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  overflow: hidden;
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  &:hover {
+    border-color: #7a95f2;
+  }
+
+  &.selected {
+    border-color: #0a2572;
+    box-shadow: 0 0 0 2px #7a95f2;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+}
