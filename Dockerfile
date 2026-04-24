@@ -13,8 +13,8 @@ COPY ./src/assets /usr/share/nginx/html/assets
 COPY ./api /usr/share/nginx/html/api
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY www.conf /etc/php/8.4/fpm/pool.d/www.conf
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 VOLUME ["/usr/share/nginx/html/images", "/usr/share/nginx/html/documents"]
-RUN mkdir -p /usr/share/nginx/html/images /usr/share/nginx/html/documents && \
-    chown -R nginx:nginx /usr/share/nginx/html/images /usr/share/nginx/html/documents
 EXPOSE 50004
-CMD [ "/bin/sh", "-c", "php-fpm8.4 -D && nginx -g 'daemon off;'" ]
+CMD [ "/entrypoint.sh" ]
