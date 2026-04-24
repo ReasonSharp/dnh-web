@@ -32,7 +32,9 @@ $offset  = ($page - 1) * $perPage;
 $total = (int) $pdo->query("SELECT COUNT(*) FROM `image`")->fetchColumn();
 
 $stmt = $pdo->prepare("SELECT `imageID`, `url` FROM `image` ORDER BY `imageID` DESC LIMIT ? OFFSET ?");
-$stmt->execute([$perPage, $offset]);
+$stmt->bindValue(1, $perPage, PDO::PARAM_INT);
+$stmt->bindValue(2, $offset,  PDO::PARAM_INT);
+$stmt->execute();
 $images = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 echo json_encode([
