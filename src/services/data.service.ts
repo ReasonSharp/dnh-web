@@ -31,4 +31,43 @@ export class DataService {
  trackVisit(page: string) {
   this.http.get(`/api/counter.php?page=${encodeURIComponent(page)}`).subscribe({ error: () => {} });
  }
+
+ isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
+ async login(username: string, password: string): Promise<{success: boolean, message?: string}> {
+  try {
+   const res = await firstValueFrom(
+    this.http.post<{success: boolean, message?: string}>(
+     '/api/login.php',
+     { username, password },
+     { withCredentials: true }
+    )
+   );
+   if (res.success) {
+    this.isLoggedIn.next(true);
+   }
+   return res;
+  } catch (e) {
+   return { success: false, message: 'Error during login' };
+  }
+ }
+
+ logout() {
+  this.http.get('/api/logout.php', { withCredentials: true }).subscribe();
+  this.isLoggedIn.next(false);
+ }
+
+ async changePassword(oldPassword: string, newPassword: string): Promise<{success: boolean, message?: string}> {
+  try {
+   return await firstValueFrom(
+    this.http.post<{success: boolean, message?: string}>(
+     '/api/change_password.php',
+     { old_password: oldPassword, new_password: newPassword },
+     { withCredentials: true }
+    )
+   );
+  } catch (e) {
+   return { success: false, message: 'Error changing password' };
+  }
+ }
 }

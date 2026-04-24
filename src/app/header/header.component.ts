@@ -1,5 +1,6 @@
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { DataService } from 'src/services/data.service';
 
 @Component({
   selector: 'app-header',
@@ -14,8 +15,10 @@ export class HeaderComponent {
   protected activeLink: string = '';
   protected needsBurger: boolean = window.innerWidth < 992;
   protected burgerState: string = 'collapsed';
+  protected isAdmin: boolean = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private dataService: DataService) {
+   this.dataService.isLoggedIn.subscribe(val => this.isAdmin = val);
   }
 
   @HostListener('window:resize')

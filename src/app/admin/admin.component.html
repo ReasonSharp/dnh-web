@@ -1,0 +1,22 @@
+<div>
+  @if (!isLoggedIn) {
+    <form (ngSubmit)="login()">
+      <input [(ngModel)]="username" placeholder="Username" required />
+      <input type="password" [(ngModel)]="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+  } @else {
+    <button (click)="logout()">Logout</button>
+    <h2>Change Password</h2>
+    <input type="password" [(ngModel)]="oldPassword" placeholder="Old Password" required />
+    <input type="password" [(ngModel)]="newPassword" placeholder="New Password" required />
+    <input type="password" [(ngModel)]="confirmPassword" placeholder="Confirm New Password" required />
+    <button (click)="changePassword()">Change Password</button>
+    <p>{{ changePassMessage }}</p>
+
+    <h2>Upload Image</h2>
+    <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+    <button (click)="uploadFile()" [disabled]="!selectedFile">Upload</button>
+    <p>{{ uploadMessage }}</p>
+  }
+</div>
