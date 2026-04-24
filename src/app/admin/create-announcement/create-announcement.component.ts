@@ -14,6 +14,8 @@ import { ImagePickerComponent } from '../image-picker/image-picker.component';
 export class CreateAnnouncementComponent {
   blurb = '';
   imageUrl = '';
+  mode: 'none' | 'link' | 'body' = 'none';
+  link = '';
   body = '';
   message = '';
   success = false;
@@ -30,7 +32,13 @@ export class CreateAnnouncementComponent {
       const res = await firstValueFrom(
         this.http.post<{ success: boolean; message?: string }>(
           '/api/create_post.php',
-          { type: 'announcement', blurb: this.blurb, imageURL: this.imageUrl, body: this.body || null },
+          {
+            type: 'announcement',
+            blurb: this.blurb,
+            imageURL: this.imageUrl,
+            link: this.mode === 'link' ? this.link || null : null,
+            body: this.mode === 'body' ? this.body || null : null,
+          },
           { withCredentials: true }
         )
       );
@@ -39,6 +47,8 @@ export class CreateAnnouncementComponent {
       if (res.success) {
         this.blurb = '';
         this.imageUrl = '';
+        this.mode = 'none';
+        this.link = '';
         this.body = '';
       }
     } catch {

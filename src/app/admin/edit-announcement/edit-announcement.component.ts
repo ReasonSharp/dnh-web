@@ -9,6 +9,7 @@ interface PostItem {
   date: string;
   blurb: string;
   imageURL: string | null;
+  link: string | null;
   body: string | null;
 }
 
@@ -24,6 +25,8 @@ export class EditAnnouncementComponent implements OnInit {
   selectedId: number | null = null;
   blurb = '';
   imageUrl = '';
+  mode: 'none' | 'link' | 'body' = 'none';
+  link = '';
   body = '';
   assetImageWarning = false;
   message = '';
@@ -47,15 +50,27 @@ export class EditAnnouncementComponent implements OnInit {
     const post = this.posts.find(p => p.id === id);
     if (!post) return;
     this.blurb = post.blurb;
-    this.body = post.body ?? '';
     this.message = '';
-    const url = post.imageURL ?? '';
-    if (url.startsWith('/assets/') || url.startsWith('assets/')) {
+    const imageURL = post.imageURL ?? '';
+    if (imageURL.startsWith('/assets/') || imageURL.startsWith('assets/')) {
       this.imageUrl = '';
       this.assetImageWarning = true;
     } else {
-      this.imageUrl = url;
+      this.imageUrl = imageURL;
       this.assetImageWarning = false;
+    }
+    if (post.link) {
+      this.mode = 'link';
+      this.link = post.link;
+      this.body = post.body ?? '';
+    } else if (post.body) {
+      this.mode = 'body';
+      this.body = post.body;
+      this.link = post.link ?? '';
+    } else {
+      this.mode = 'none';
+      this.link = '';
+      this.body = '';
     }
   }
 
@@ -75,7 +90,14 @@ export class EditAnnouncementComponent implements OnInit {
       const res = await firstValueFrom(
         this.http.post<{ success: boolean; message?: string }>(
           '/api/update_post.php',
-          { type: 'announcement', id: this.selectedId, blurb: this.blurb, imageURL: this.imageUrl, body: this.body || null },
+          {
+            type: 'announcement',
+            id: this.selectedId,
+            blurb: this.blurb,
+            imageURL: this.imageUrl,
+            link: this.mode === 'link' ? this.link || null : null,
+            body: this.mode === 'body' ? this.body || null : null,
+          },
           { withCredentials: true }
         )
       );
@@ -86,7 +108,8 @@ export class EditAnnouncementComponent implements OnInit {
         if (post) {
           post.blurb = this.blurb;
           post.imageURL = this.imageUrl;
-          post.body = this.body || null;
+          post.link = this.mode === 'link' ? this.link || null : null;
+          post.body = this.mode === 'body' ? this.body || null : null;
           this.assetImageWarning = false;
         }
       }

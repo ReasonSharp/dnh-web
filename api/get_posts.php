@@ -36,7 +36,7 @@ $table = $type === 'news' ? 'news' : 'announcement';
 $idCol = $type === 'news' ? 'newsID' : 'announcementID';
 
 $stmt = $pdo->query(
- "SELECT `$idCol` AS `id`, `date`, `blurb`, `imageURL`, `body` FROM `$table` ORDER BY `$idCol` DESC"
+ "SELECT `$idCol` AS `id`, `date`, `blurb`, `imageURL`, `link`, `body` FROM `$table` ORDER BY `$idCol` DESC"
 );
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

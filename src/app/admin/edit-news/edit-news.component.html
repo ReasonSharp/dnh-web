@@ -38,9 +38,35 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Članak <span class="text-muted small">(neobavezno)</span></label>
-        <textarea class="form-control" [(ngModel)]="body" name="body" rows="6"></textarea>
+        <label class="form-label">Dodatak</label>
+        <div class="d-flex gap-4">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" id="en-none" name="mode" value="none" [(ngModel)]="mode">
+            <label class="form-check-label" for="en-none">Bez dodatka</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" id="en-link" name="mode" value="link" [(ngModel)]="mode">
+            <label class="form-check-label" for="en-link">URL</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" id="en-body" name="mode" value="body" [(ngModel)]="mode">
+            <label class="form-check-label" for="en-body">Članak</label>
+          </div>
+        </div>
       </div>
+
+      @if (mode === 'link') {
+        <div class="mb-3">
+          <label class="form-label">URL</label>
+          <input type="url" class="form-control" [(ngModel)]="link" name="link" placeholder="https://...">
+        </div>
+      }
+      @if (mode === 'body') {
+        <div class="mb-3">
+          <label class="form-label">Članak</label>
+          <textarea class="form-control" [(ngModel)]="body" name="body" rows="6"></textarea>
+        </div>
+      }
 
       <button type="button" class="btn btn-primary" (click)="save()">Spremi promjene</button>
 
