@@ -51,25 +51,9 @@ $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
 $newFilename = bin2hex(random_bytes(16)) . '.' . strtolower($ext);
 $targetPath = $targetDir . $newFilename;
 
-if ($isImage) {
- $src = null;
- switch ($mime) {
-  case 'image/jpeg': $src = imagecreatefromjpeg($file['tmp_name']); break;
-  case 'image/png':  $src = imagecreatefrompng($file['tmp_name']); break;
- }
- if ($src) {
-  if ($mime === 'image/jpeg') imagejpeg($src, $targetPath, 92);
-  elseif ($mime === 'image/png') imagepng($src, $targetPath, 8);
-  imagedestroy($src);
- } else {
-  echo json_encode(['success' => false, 'message' => 'Failed to process image']);
-  exit;
- }
-} else {
- if (!move_uploaded_file($file['tmp_name'], $targetPath)) {
-  echo json_encode(['success' => false, 'message' => 'Failed to save file']);
-  exit;
- }
+if (!move_uploaded_file($file['tmp_name'], $targetPath)) {
+ echo json_encode(['success' => false, 'message' => 'Failed to save file']);
+ exit;
 }
 
 // Success
