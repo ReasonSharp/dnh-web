@@ -15,6 +15,8 @@ import { LogoutComponent } from './admin/logout/logout.component';
 import { EditDetailsComponent } from './admin/edit-details/edit-details.component';
 import { CreateNewsComponent } from './admin/create-news/create-news.component';
 import { CreateAnnouncementComponent } from './admin/create-announcement/create-announcement.component';
+import { EditNewsComponent } from './admin/edit-news/edit-news.component';
+import { EditAnnouncementComponent } from './admin/edit-announcement/edit-announcement.component';
 import { NewsItemResolver } from 'src/services/resolvers/news-item-resolver.service';
 import { AnnouncementResolver } from 'src/services/resolvers/announcement-resolver.service';
 
@@ -34,6 +36,8 @@ export const routes: Routes = [
       { path: 'upload-document', component: UploadDocumentComponent },
       { path: 'create-news', component: CreateNewsComponent },
       { path: 'create-announcement', component: CreateAnnouncementComponent },
+      { path: 'edit-news', component: EditNewsComponent },
+      { path: 'edit-announcement', component: EditAnnouncementComponent },
       { path: 'change-password', component: ChangePasswordComponent },
       { path: 'edit-details', component: EditDetailsComponent },
       { path: 'logout', component: LogoutComponent }
