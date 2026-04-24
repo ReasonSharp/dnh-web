@@ -8,6 +8,9 @@ import { CodexComponent } from './codex/codex.component';
 import { MembershipComponent } from './membership/membership.component';
 import { ContactComponent } from './contact/contact.component';
 import { AdminComponent } from './admin/admin.component';
+import { ChangePasswordComponent } from './admin/change-password/change-password.component';
+import { UploadImageComponent } from './admin/upload-image/upload-image.component';
+import { LogoutComponent } from './admin/logout/logout.component';
 import { NewsItemResolver } from 'src/services/resolvers/news-item-resolver.service';
 import { AnnouncementResolver } from 'src/services/resolvers/announcement-resolver.service';
 
@@ -19,7 +22,15 @@ export const routes: Routes = [
   { title: "Kodeks", path: "codex", component: CodexComponent },
   { title: "Članstvo", path: "join", component: MembershipComponent },
   { title: "Kontakt", path: "contact", component: ContactComponent },
-  { title: "Admin", path: "admin", component: AdminComponent }
+  {
+    title: "Admin", path: "admin", component: AdminComponent,
+    children: [
+      { path: '', redirectTo: 'upload', pathMatch: 'full' },
+      { path: 'upload', component: UploadImageComponent },
+      { path: 'change-password', component: ChangePasswordComponent },
+      { path: 'logout', component: LogoutComponent }
+    ]
+  }
 ];
 
 @NgModule({
