@@ -11,12 +11,13 @@
   height: auto;
   overflow: visible;
   white-space: normal;
-  word-break: normal;
+  word-break: break-word;
 
   // Quill resets paragraph margins; restore them for read-only display
   p {
     margin-bottom: 1em;
     &:last-child { margin-bottom: 0; }
+    word-break: break-word;
   }
 
   iframe {
