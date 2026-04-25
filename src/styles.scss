@@ -9,15 +9,16 @@
 .ql-editor.article-body {
   padding: 0;
   height: auto;
-  overflow: visible;
+  overflow: hidden;
   white-space: normal;
-  word-break: break-word;
+  word-break: normal;
+  overflow-wrap: break-word;
+  hyphens: none;
 
   // Quill resets paragraph margins; restore them for read-only display
   p {
     margin-bottom: 1em;
     &:last-child { margin-bottom: 0; }
-    word-break: break-word;
   }
 
   iframe {
