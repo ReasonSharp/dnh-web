@@ -1,7 +1,0 @@
-ALTER TABLE `news`
-  ADD COLUMN `title` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL AFTER `blurb`,
-  MODIFY COLUMN `body` MEDIUMTEXT NULL;
-
-ALTER TABLE `announcement`
-  ADD COLUMN `title` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL AFTER `blurb`,
-  MODIFY COLUMN `body` MEDIUMTEXT NULL;

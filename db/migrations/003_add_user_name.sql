@@ -1,2 +1,0 @@
-ALTER TABLE `user`
-  ADD COLUMN `name` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL;

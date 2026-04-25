@@ -5,6 +5,9 @@
   min-height: 200px;
 }
 
+.ql-editor {
+ cursor: auto;
+}
 // Quill content rendered outside the editor (article modal)
 .ql-editor.article-body {
   padding: 0;

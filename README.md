@@ -77,10 +77,7 @@ chmod 755 images documents   # web server must be able to write here
 Create a MySQL/MariaDB database and user, then run the migrations in order:
 
 ```bash
-mysql -u dnh_user -p dnh < db/migrations/001_initial_schema.sql
-mysql -u dnh_user -p dnh < db/migrations/002_create_media_tables.sql
-mysql -u dnh_user -p dnh < db/migrations/003_add_user_name.sql
-mysql -u dnh_user -p dnh < db/migrations/004_add_article_title.sql
+mysql -u dnh_user -p dnh < db/schema.sql
 ```
 
 To create the first admin user, run `api/insert_user.php` once (delete or
