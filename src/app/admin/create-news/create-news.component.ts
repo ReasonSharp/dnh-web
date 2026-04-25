@@ -42,7 +42,11 @@ export class CreateNewsComponent {
       const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
       const embedUrl = match ? `https://www.youtube.com/embed/${match[1]}` : url;
       const range = editor.getSelection(true);
-      editor.insertEmbed(range.index, 'video', embedUrl, 'user');
+      editor.clipboard.dangerouslyPasteHTML(
+        range.index,
+        `<iframe class="ql-video" src="${embedUrl}" frameborder="0" allowfullscreen="true"></iframe>`,
+        'user',
+      );
     });
   }
 
