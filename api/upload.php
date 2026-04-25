@@ -8,8 +8,9 @@ if (!isset($_SESSION['user_id'])) {
  exit;
 }
 
-$uploadDirImages    = '/usr/share/nginx/html/images/';
-$uploadDirDocuments = '/usr/share/nginx/html/documents/';
+$webRoot            = dirname(__DIR__);
+$uploadDirImages    = $webRoot . '/images/';
+$uploadDirDocuments = $webRoot . '/documents/';
 
 $maxFileSize = 10 * 1024 * 1024;
 

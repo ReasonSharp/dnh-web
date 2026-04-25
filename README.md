@@ -1,27 +1,153 @@
-# DnhWeb
+# Društvo naturista Hrvatske – Web
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0.
+Angular 20 SPA with a PHP 8 backend API and MariaDB database.
 
-## Development server
+## Local development
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+**Prerequisites:** Node.js 22, a reachable PHP + MariaDB instance on port 54321.
 
-## Code scaffolding
+```bash
+npm install
+npm start        # dev server at http://localhost:4200, proxies /api → localhost:54321
+npm run build    # production build → dist/dnh-web/browser/
+npm test         # Karma/Jasmine unit tests
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+---
 
-## Build
+## Deployment
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Docker (current setup)
 
-## Running unit tests
+The repository ships a multi-stage `Dockerfile` that builds the Angular app and
+packages it together with nginx 1.29 and PHP-FPM 8.4 into a single image.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
+docker build -t dnh-web .
+docker run -d \
+  -p 50004:50004 \
+  -e DB_HOST=host.docker.internal \
+  -e DB_NAME=dnh \
+  -e DB_USER=dnh_user \
+  -e DB_PASS=secret \
+  -v /srv/dnh/images:/usr/share/nginx/html/images \
+  -v /srv/dnh/documents:/usr/share/nginx/html/documents \
+  dnh-web
+```
 
-## Running end-to-end tests
+Persistent uploads live in the two host-mounted volumes; everything else is
+rebuilt from the image on each deploy.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+---
 
-## Further help
+### Traditional / shared hosting
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+The stack is a standard Angular + PHP + MySQL combination that runs on any host
+offering **PHP 8.1+** and **MySQL/MariaDB**, with either Apache (mod_rewrite) or
+nginx. No Docker, no Node.js runtime on the server is required.
+
+#### 1. Build locally
+
+```bash
+npm install
+npm run build
+```
+
+This produces `dist/dnh-web/browser/` – static HTML/JS/CSS ready to upload.
+
+#### 2. Upload files
+
+Copy the following to your web root (`public_html/`, `www/`, or equivalent):
+
+```
+dist/dnh-web/browser/*   → web root (index.html, main-*.js, styles-*.css, …)
+api/                     → web root/api/
+db/                      → web root/db/   (only needed for running migrations)
+```
+
+Create two writable directories in the web root:
+
+```bash
+mkdir images documents
+chmod 755 images documents   # web server must be able to write here
+```
+
+#### 3. Set up the database
+
+Create a MySQL/MariaDB database and user, then run the migrations in order:
+
+```bash
+mysql -u dnh_user -p dnh < db/migrations/001_initial_schema.sql
+mysql -u dnh_user -p dnh < db/migrations/002_create_media_tables.sql
+mysql -u dnh_user -p dnh < db/migrations/003_add_user_name.sql
+mysql -u dnh_user -p dnh < db/migrations/004_add_article_title.sql
+```
+
+To create the first admin user, run `api/insert_user.php` once (delete or
+protect it afterwards).
+
+#### 4. Configure database credentials
+
+The PHP backend reads credentials from environment variables:
+`DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASS`.
+
+**Apache** – add to `.htaccess` in your web root (requires `AllowOverride All`
+or `AllowOverride Env` in the server config, which most shared hosts enable):
+
+```apache
+SetEnv DB_HOST localhost
+SetEnv DB_NAME dnh
+SetEnv DB_USER dnh_user
+SetEnv DB_PASS secret
+```
+
+**nginx + PHP-FPM** – add to the `location ~ \.php$` block in your server config:
+
+```nginx
+fastcgi_param DB_HOST localhost;
+fastcgi_param DB_NAME dnh;
+fastcgi_param DB_USER dnh_user;
+fastcgi_param DB_PASS secret;
+```
+
+#### 5. Configure SPA routing
+
+The Angular app is a single-page application: the server must return
+`index.html` for every URL that is not a real file or the `/api`, `/images`, or
+`/documents` directories.
+
+**Apache** – create (or add to) `.htaccess` in the web root:
+
+```apache
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Pass through PHP API, uploaded images and documents
+  RewriteRule ^api/ - [L]
+  RewriteRule ^images/ - [L]
+  RewriteRule ^documents/ - [L]
+
+  # Serve existing files/directories directly
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+
+  # Everything else → Angular entry point
+  RewriteRule . /index.html [L]
+</IfModule>
+```
+
+**nginx** – the `try_files` directive already in `nginx.conf` covers this; copy
+the relevant `location /` block to your server config.
+
+#### Summary of what ends up in the web root
+
+```
+index.html
+main-*.js / polyfills-*.js / styles-*.css / …   ← Angular build output
+assets/
+api/
+images/      ← writable, initially empty
+documents/   ← writable, initially empty
+.htaccess    ← Apache only
+```
