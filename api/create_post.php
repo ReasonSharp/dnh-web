@@ -21,6 +21,9 @@ $imageURL = trim($input['imageURL'] ?? '');
 $link     = trim($input['link']     ?? '') ?: null;
 $title    = trim($input['title']    ?? '') ?: null;
 $body     = trim($input['body']     ?? '') ?: null;
+if ($body !== null) {
+ $body = str_replace(['&nbsp;', "\xc2\xa0"], ' ', $body);
+}
 
 if (!in_array($type, ['news', 'announcement'])) {
  http_response_code(400);

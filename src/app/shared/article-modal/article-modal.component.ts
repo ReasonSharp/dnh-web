@@ -33,10 +33,12 @@ export class ArticleModalComponent implements OnInit, OnDestroy {
   }
 
   private processBody(html: string): string {
-    // Quill may serialize video embeds as <a> links; convert YouTube embed URLs to iframes
-    return html.replace(
-      /<a\s[^>]*href="(https?:\/\/(?:www\.)?youtube\.com\/embed\/[^"]+)"[^>]*>.*?<\/a>/gi,
-      '<iframe src="$1" frameborder="0" allowfullscreen style="width:100%;aspect-ratio:16/9;"></iframe>'
-    );
+    return html
+      .replace(/&nbsp;/g, ' ')
+      .replace(/ /g, ' ')
+      .replace(
+        /<a\s[^>]*href="(https?:\/\/(?:www\.)?youtube\.com\/embed\/[^"]+)"[^>]*>.*?<\/a>/gi,
+        '<iframe src="$1" frameborder="0" allowfullscreen style="width:100%;aspect-ratio:16/9;"></iframe>',
+      );
   }
 }
