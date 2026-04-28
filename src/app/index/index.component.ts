@@ -4,10 +4,11 @@ import { DataService } from 'src/services/data.service';
 import { INewsItem } from 'src/models/news-item.model';
 import { IAnnouncement } from 'src/models/announcement.model';
 import { ArticleModalComponent } from '../shared/article-modal/article-modal.component';
+import { HrDatePipe } from 'src/utils/hr-date.pipe';
 
 @Component({
   selector: 'app-index',
-  imports: [CommonModule, ArticleModalComponent],
+  imports: [CommonModule, ArticleModalComponent, HrDatePipe],
   templateUrl: './index.component.html',
   styleUrl: './index.component.scss',
 })

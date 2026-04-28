@@ -6,15 +6,17 @@ import { provideQuillConfig } from 'ngx-quill';
 import localeHr from '@angular/common/locales/hr';
 
 import { routes } from './app.routes';
+import { HrDatePipe } from 'src/utils/hr-date.pipe';
 
-registerLocaleData(localeHr, 'hr');
+registerLocaleData(localeHr, 'hr-HR');
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
-    provideHttpClient(),
-    provideQuillConfig({}),
-    { provide: LOCALE_ID, useValue: 'hr' },
-  ]
+ providers: [
+  provideZoneChangeDetection({ eventCoalescing: true }),
+  provideRouter(routes),
+  provideHttpClient(),
+  provideQuillConfig({}),
+  { provide: LOCALE_ID, useValue: 'hr-HR' },
+  HrDatePipe  
+ ]
 };

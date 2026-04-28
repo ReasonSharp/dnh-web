@@ -9,19 +9,19 @@
          @for (item of announcements; track item) {
           @if (item.link) {
           <a class="d-flex flex-column news-item" href="{{ item.link }}" target="_blank">
-           <div class="datetime">{{ item.date | date:'longDate' }}</div>
+           <div class="datetime">{{ item.date | hrDate }}</div>
            <div class="newstext flex-grow-1">{{ item.blurb }}</div>
            <div class="news" style="background-image: url('{{ item.imageURL }}');"></div>
           </a>
           } @else if (item.body) {
           <div class="d-flex flex-column news-item news-item-article" role="button" (click)="openArticle(item)">
-           <div class="datetime">{{ item.date | date:'longDate' }}</div>
+           <div class="datetime">{{ item.date | hrDate }}</div>
            <div class="newstext flex-grow-1">{{ item.blurb }}</div>
            <div class="news" style="background-image: url('{{ item.imageURL }}');"></div>
           </div>
           } @else {
           <div class="d-flex flex-column news-item">
-           <div class="datetime">{{ item.date | date:'longDate' }}</div>
+           <div class="datetime">{{ item.date | hrDate }}</div>
            <div class="newstext flex-grow-1">{{ item.blurb }}</div>
            <div class="news" style="background-image: url('{{ item.imageURL }}');"></div>
           </div>
@@ -39,19 +39,19 @@
              @for (item of newsItems; track item) {
               @if (item.link) {
                <a class="d-flex flex-column news-item" href="{{ item.link }}" target="_blank">
-                 <div class="datetime">{{ item.date | date:'longDate' }}</div>
+                 <div class="datetime">{{ item.date | hrDate }}</div>
                  <div class="newstext flex-grow-1">{{ item.blurb }}</div>
                  <div class="news" style="background-image: url('{{ item.imageURL }}');"></div>
                </a>
               } @else if (item.body) {
                <div class="d-flex flex-column news-item news-item-article" role="button" (click)="openArticle(item)">
-                 <div class="datetime">{{ item.date | date:'longDate' }}</div>
+                 <div class="datetime">{{ item.date | hrDate }}</div>
                  <div class="newstext flex-grow-1">{{ item.blurb }}</div>
                  <div class="news" style="background-image: url('{{ item.imageURL }}');"></div>
                </div>
               } @else {
                <div class="d-flex flex-column news-item">
-                 <div class="datetime">{{ item.date | date:'longDate' }}</div>
+                 <div class="datetime">{{ item.date | hrDate }}</div>
                  <div class="newstext flex-grow-1">{{ item.blurb }}</div>
                  <div class="news" style="background-image: url('{{ item.imageURL }}');"></div>
                </div>
