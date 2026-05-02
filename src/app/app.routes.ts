@@ -26,7 +26,7 @@ import { StatuteResolver } from 'src/services/resolvers/statute-resolver.service
 export const routes: Routes = [
   { title: "DNH", path: "", pathMatch: "full", component: IndexComponent, resolve: [NewsItemResolver, AnnouncementResolver] },
   { title: "O Društvu", path: "about", component: AboutComponent },
-  { title: "Statut", path: "statut", component: StatutComponent },
+  { title: "Statut", path: "statut", component: StatutComponent, resolve: [StatuteResolver] },
   { title: "Privatnost", path: "privacy-policy", component: PrivacyComponent },
   { title: "Kodeks", path: "codex", component: CodexComponent },
   { title: "Članstvo", path: "join", component: MembershipComponent },

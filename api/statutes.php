@@ -21,27 +21,13 @@ $pdo = new PDO(
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
   $statutes = $pdo->query(
-    "SELECT s.statuteID AS id, s.documentID, d.`name`, d.url, s.display_order, s.is_current 
-     FROM `statute` s 
-     JOIN `document` d ON s.documentID = d.documentID 
+    "SELECT s.statuteID AS id, s.documentID, d.`name`, d.url, s.display_order, s.is_current
+     FROM `statute` s
+     JOIN `document` d ON s.documentID = d.documentID
      ORDER BY s.display_order ASC"
   )->fetchAll(PDO::FETCH_ASSOC);
 
-  if (isset($_SESSION['user_id'])) {
-    echo json_encode(['success' => true, 'statutes' => $statutes]);
-  } else {
-    $current = null;
-    $archive = [];
-    foreach ($statutes as $s) {
-      $entry = ['name' => $s['name'], 'url' => $s['url']];
-      if ($s['is_current']) {
-        $current = $entry;
-      } else {
-        $archive[] = $entry;
-      }
-    }
-    echo json_encode(['current' => $current, 'archive' => $archive]);
-  }
+  echo json_encode(['success' => true, 'statutes' => $statutes]);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (!isset($_SESSION['user_id'])) {
     http_response_code(401);

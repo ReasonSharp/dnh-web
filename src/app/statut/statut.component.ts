@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/services/data.service';
-import { HttpClient } from '@angular/common/http';
-
-interface StatuteData {
-  current: { name: string; url: string } | null;
-  archive: { name: string; url: string }[];
-}
+import { IStatute } from 'src/models/statute.model';
 
 @Component({
   selector: 'app-statut',
@@ -14,14 +9,15 @@ interface StatuteData {
   styleUrl: './statut.component.scss',
 })
 export class StatutComponent implements OnInit {
-  statuteData: StatuteData = { current: null, archive: [] };
+  current: IStatute | null = null;
+  archive: IStatute[] = [];
 
-  constructor(private dataService: DataService, private http: HttpClient) { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit() {
-    this.http.get<StatuteData>('/api/statutes.php').subscribe({
-      next: res => this.statuteData = res,
-      error: () => this.statuteData = { current: null, archive: [] }
+    this.dataService.statutes.subscribe(stats => {
+      this.current = stats.find(s => s.is_current) ?? null;
+      this.archive = stats.filter(s => !s.is_current);
     });
     this.dataService.trackVisit('/statut');
   }
