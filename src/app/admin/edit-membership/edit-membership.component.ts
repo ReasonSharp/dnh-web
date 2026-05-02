@@ -151,8 +151,8 @@ export class EditMembershipComponent implements OnInit {
         this.feesSuccess = false;
         return;
       }
-      const d = cat.discountedPrice !== '' ? parseFloat(cat.discountedPrice) : null;
-      if (d !== null && (isNaN(d) || d < 0 || d >= p)) {
+      const d = (cat.discountedPrice != null && cat.discountedPrice !== '') ? parseFloat(String(cat.discountedPrice)) : null;
+      if (d !== null && (d < 0 || d >= p)) {
         this.feesMessage = `Snižena cijena mora biti manja od pune cijene za kategoriju "${cat.name}".`;
         this.feesSuccess = false;
         return;
@@ -160,14 +160,14 @@ export class EditMembershipComponent implements OnInit {
     }
 
     const ef = this.enrollmentEnabled ? parseFloat(this.enrollmentFee) : 0;
-    const ed = this.enrollmentEnabled && this.enrollmentDiscounted !== '' ? parseFloat(this.enrollmentDiscounted) : null;
+    const ed = (this.enrollmentEnabled && this.enrollmentDiscounted != null && this.enrollmentDiscounted !== '') ? parseFloat(String(this.enrollmentDiscounted)) : null;
     if (this.enrollmentEnabled) {
       if (isNaN(ef) || ef < 0) {
         this.feesMessage = 'Neispravna cijena upisnine.';
         this.feesSuccess = false;
         return;
       }
-      if (ed !== null && (isNaN(ed) || ed < 0 || ed >= ef)) {
+      if (ed !== null && (ed < 0 || ed >= ef)) {
         this.feesMessage = 'Snižena cijena upisnine mora biti manja od pune cijene.';
         this.feesSuccess = false;
         return;
@@ -184,7 +184,7 @@ export class EditMembershipComponent implements OnInit {
         categories: this.categories.map(c => ({
           name: c.name,
           price: parseFloat(c.price) || 0,
-          discounted_price: c.discountedPrice !== '' ? parseFloat(c.discountedPrice) : null,
+          discounted_price: (c.discountedPrice != null && c.discountedPrice !== '') ? parseFloat(String(c.discountedPrice)) : null,
         })),
       });
       this.feesSuccess = res.success;
