@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/services/data.service';
+import { IMembershipConfig } from 'src/models/membership.model';
 
 @Component({
   selector: 'app-membership',
@@ -8,9 +9,15 @@ import { DataService } from 'src/services/data.service';
   styleUrl: './membership.component.scss',
 })
 export class MembershipComponent implements OnInit {
- constructor(private dataService: DataService) { }
+  config: IMembershipConfig | null = null;
+  currentYear = new Date().getFullYear();
+  loading = true;
 
- ngOnInit() {
-  this.dataService.trackVisit('/join');
- }
+  constructor(private dataService: DataService) {}
+
+  async ngOnInit() {
+    this.dataService.trackVisit('/join');
+    this.config = await this.dataService.readMembershipConfig();
+    this.loading = false;
+  }
 }

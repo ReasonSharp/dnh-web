@@ -1,31 +1,70 @@
 <div class="container">
-    <h1>Učlanite se u DNH</h1>
-    <p>Zahvaljujemo na interesu za članstvo u Društvu naturista Hrvatske.</p>
-    <p>Članarine za 2026. godinu su kako slijedi:</p>
+  <h1>Učlanite se u DNH</h1>
+  <p>Zahvaljujemo na interesu za članstvo u Društvu naturista Hrvatske.</p>
+
+  @if (loading) {
+    <div class="text-muted">Učitavanje...</div>
+  } @else if (!config) {
+    <p>Za informacije o članarinama kontaktirajte nas na <a href="mailto:dnh@dnh.hr">dnh@dnh.hr</a>.</p>
+  } @else {
+    <p>Članarine za {{ currentYear }}. godinu su kako slijedi:</p>
     <ul>
-        <li>Pojedinačna: 30.00 €</li>
-        <li>Obiteljska: 40.00 €</li>
+      @for (cat of config.categories; track cat.id) {
+        <li>
+          {{ cat.name }}:
+          @if (cat.discountedPrice !== null) {
+            <s>{{ cat.price.toFixed(2) }} €</s>&nbsp;@if (cat.discountedPrice === 0) {
+              <strong>Besplatno!</strong>
+            } @else {
+              {{ cat.discountedPrice.toFixed(2) }} €
+            }
+          } @else {
+            {{ cat.price.toFixed(2) }} €
+          }
+        </li>
+      }
     </ul>
-    <p><strong>Novi članovi uz članarinu plaćaju i upisninu: 10.00 € po osobi</strong></p>
+
+    @if (config.enrollmentFeeEnabled) {
+      <p>
+        <strong>Novi članovi uz članarinu plaćaju i upisninu:
+          @if (config.enrollmentFeeDiscounted !== null) {
+            <s>{{ config.enrollmentFee.toFixed(2) }} €</s>&nbsp;@if (config.enrollmentFeeDiscounted === 0) {
+              Besplatno!
+            } @else {
+              {{ config.enrollmentFeeDiscounted.toFixed(2) }} €
+            }
+          } @else {
+            {{ config.enrollmentFee.toFixed(2) }} €
+          }
+          po osobi</strong>
+      </p>
+    }
+
     <p>Za učlanjenje molimo popunite pristupnicu i popunjenu je pošaljite na <a href="mailto:dnh@dnh.hr">dnh@dnh.hr</a> uz potvrdu o plaćanju članarine i - ukoliko ste novi član ili niste bili član dvije ili više godina - upisnine.</p>
-    <ul>
-        <li><a href="/assets/pristupnica.pdf" target="newTab">Pristupnicu preuzmite ovdje</a></li>
-    </ul>
+
+    @if (config.admissionFormUrl) {
+      <ul>
+        <li><a [href]="config.admissionFormUrl" target="newTab">Pristupnicu preuzmite ovdje</a></li>
+      </ul>
+    }
+
     <p>Uplatu ukupnog iznosa molimo izvršiti na:</p>
     <div class="row">
-        <div class="col-lg-2 col-sm-3">IBAN</div>
-        <div class="col-lg-10 col-sm-9">HR6923600001103207288</div>
+      <div class="col-lg-2 col-sm-3">IBAN</div>
+      <div class="col-lg-10 col-sm-9">{{ config.iban }}</div>
     </div>
     <div class="row">
-        <div class="col-lg-2 col-sm-3">SWIFT</div>
-        <div class="col-lg-10 col-sm-7">ZABAHR2X</div>
+      <div class="col-lg-2 col-sm-3">SWIFT</div>
+      <div class="col-lg-10 col-sm-7">{{ config.swift }}</div>
     </div>
     <div class="row">
-        <div class="col-lg-2 col-sm-3">Poziv na broj</div>
-        <div class="col-lg-10 col-sm-7">Vaš OIB</div>
+      <div class="col-lg-2 col-sm-3">Poziv na broj</div>
+      <div class="col-lg-10 col-sm-7">Vaš OIB</div>
     </div>
     <div class="row">
-        <div class="col-lg-2 col-sm-3">Opis plaćanja</div>
-        <div class="col-lg-10 col-sm-7">Članarina za 2026. godinu</div>
+      <div class="col-lg-2 col-sm-3">Opis plaćanja</div>
+      <div class="col-lg-10 col-sm-7">Članarina za {{ currentYear }}. godinu</div>
     </div>
+  }
 </div>

@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, firstValueFrom } from "rxjs";
 import { IAnnouncement } from "src/models/announcement.model";
 import { IDocument } from "src/models/document.model";
+import { IMembershipConfig } from "src/models/membership.model";
 import { INewsItem } from "src/models/news-item.model";
 import { IStatute } from "src/models/statute.model";
 
@@ -98,6 +99,63 @@ export class DataService {
  logout() {
   this.http.get('/api/logout.php', { withCredentials: true }).subscribe();
   this.isLoggedIn.next(false);
+ }
+
+ async readMembershipConfig(year?: number): Promise<IMembershipConfig | null> {
+  const url = year != null ? `/api/membership.php?year=${year}` : '/api/membership.php';
+  try {
+   const res = await firstValueFrom(this.http.get<any>(url));
+   if (!res.success) return null;
+   return {
+    year: res.year,
+    iban: res.iban,
+    swift: res.swift,
+    enrollmentFeeEnabled: res.enrollment_fee_enabled,
+    enrollmentFee: res.enrollment_fee,
+    enrollmentFeeDiscounted: res.enrollment_fee_discounted ?? null,
+    admissionFormUrl: res.admission_form_url ?? null,
+    admissionFormDocumentId: res.admission_form_document_id ?? null,
+    categories: (res.categories ?? []).map((c: any) => ({
+     id: c.id,
+     name: c.name,
+     price: c.price,
+     discountedPrice: c.discounted_price ?? null,
+     displayOrder: c.display_order,
+    })),
+   };
+  } catch {
+   return null;
+  }
+ }
+
+ async readMembershipYears(): Promise<number[]> {
+  try {
+   const res = await firstValueFrom(
+    this.http.get<{ success: boolean; years: number[] }>('/api/membership.php?all=1', { withCredentials: true })
+   );
+   return res.success ? res.years : [];
+  } catch {
+   return [];
+  }
+ }
+
+ async saveMembershipConfig(payload: {
+  year: number;
+  iban: string;
+  swift: string;
+  enrollment_fee_enabled: boolean;
+  enrollment_fee: number;
+  enrollment_fee_discounted: number | null;
+  admission_form_document_id: number | null;
+  categories: { name: string; price: number; discounted_price: number | null }[];
+ }): Promise<{ success: boolean; message?: string }> {
+  try {
+   return await firstValueFrom(
+    this.http.post<{ success: boolean; message?: string }>('/api/membership.php', payload, { withCredentials: true })
+   );
+  } catch {
+   return { success: false, message: 'Greška pri spremanju.' };
+  }
  }
 
  async changePassword(oldPassword: string, newPassword: string): Promise<{success: boolean, message?: string}> {
