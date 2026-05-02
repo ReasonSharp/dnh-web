@@ -38,8 +38,10 @@ export class EditStatutesComponent implements OnInit {
  async ngOnInit() {
   try {
    const resDocs = await this.dataService.getDocuments();
-   if (resDocs.success) this.documents = resDocs.documents;
-
+   if (resDocs.success) {
+    this.documents = resDocs.documents;
+    console.log('Documents loaded:', this.documents);
+   }
    const resStats = await this.dataService.getStatutes();
    if (resStats.success) this.statutes = resStats.statutes;
 
@@ -56,6 +58,7 @@ export class EditStatutesComponent implements OnInit {
 
  addToArchive() {
   if (this.selectedDocumentId === 0) return;
+  console.log('Adding document ID', this.selectedDocumentId);
   const doc = this.documents.find(d => d.id === this.selectedDocumentId);
   if (!doc) return;
   this.statutes.push({
