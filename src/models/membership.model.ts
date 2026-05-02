@@ -8,12 +8,15 @@ export interface IMembershipCategory {
 
 export interface IMembershipConfig {
   year: number;
-  iban: string;
-  swift: string;
   enrollmentFeeEnabled: boolean;
   enrollmentFee: number;
   enrollmentFeeDiscounted: number | null;
+  categories: IMembershipCategory[];
+}
+
+export interface IPaymentSettings {
+  iban: string;
+  swift: string;
   admissionFormUrl: string | null;
   admissionFormDocumentId: number | null;
-  categories: IMembershipCategory[];
 }

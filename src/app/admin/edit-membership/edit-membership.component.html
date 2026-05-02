@@ -4,31 +4,11 @@
   @if (loading) {
     <div class="text-muted">Učitavanje...</div>
   } @else {
-    <div class="row mb-4 align-items-end">
-      <div class="col-md-4">
-        <label class="form-label">Odaberi godinu</label>
-        <select class="form-select" [(ngModel)]="selectedYear" (ngModelChange)="onYearChange($event)">
-          <option [ngValue]="null" disabled>-- Odaberi godinu --</option>
-          @for (year of years; track year) {
-            <option [ngValue]="year">{{ year }}.</option>
-          }
-        </select>
-      </div>
-      <div class="col-md-5">
-        <label class="form-label">Nova godina</label>
-        <div class="input-group">
-          <input type="number" class="form-control" [(ngModel)]="newYear" placeholder="npr. 2027" min="2000" max="2100">
-          <button class="btn btn-outline-primary" type="button" (click)="addNewYear()">Dodaj</button>
-        </div>
-      </div>
-    </div>
 
-    @if (selectedYear !== null) {
-      @if (configLoading) {
-        <div class="text-muted">Učitavanje konfiguracije...</div>
-      } @else {
-        <h5 class="mb-3">{{ isNewYear ? 'Nova konfiguracija za ' : 'Konfiguracija za ' }}{{ selectedYear }}. godinu</h5>
-
+    <!-- Payment data section -->
+    <div class="card mb-4">
+      <div class="card-header fw-semibold">Podaci za uplatu</div>
+      <div class="card-body">
         <div class="row mb-3">
           <div class="col-md-6">
             <label class="form-label">IBAN</label>
@@ -39,27 +19,7 @@
             <input type="text" class="form-control" [(ngModel)]="swift">
           </div>
         </div>
-
-        <div class="mb-4">
-          <div class="form-check mb-2">
-            <input class="form-check-input" type="checkbox" id="enrollmentEnabled" [(ngModel)]="enrollmentEnabled">
-            <label class="form-check-label" for="enrollmentEnabled">Upisnina aktivna</label>
-          </div>
-          @if (enrollmentEnabled) {
-            <div class="row">
-              <div class="col-md-3">
-                <label class="form-label">Iznos upisnine (€)</label>
-                <input type="number" class="form-control" [(ngModel)]="enrollmentFee" min="0" step="0.01" placeholder="0.00">
-              </div>
-              <div class="col-md-4">
-                <label class="form-label">Sniženi iznos (€, prazno = bez popusta)</label>
-                <input type="number" class="form-control" [(ngModel)]="enrollmentDiscounted" min="0" step="0.01" placeholder="prazno = bez popusta">
-              </div>
-            </div>
-          }
-        </div>
-
-        <div class="mb-4">
+        <div class="mb-3">
           <label class="form-label">Pristupnica (dokument)</label>
           <select class="form-select" [(ngModel)]="admissionFormDocumentId" style="max-width: 500px;">
             <option [ngValue]="null">-- Nije odabrana --</option>
@@ -68,42 +28,101 @@
             }
           </select>
         </div>
+        <button class="btn btn-primary" type="button" (click)="savePayment()" [disabled]="savingPayment">
+          {{ savingPayment ? 'Spremanje...' : 'Spremi podatke za uplatu' }}
+        </button>
+        @if (paymentMessage) {
+          <div class="alert mt-3 mb-0" [class.alert-success]="paymentSuccess" [class.alert-danger]="!paymentSuccess">{{ paymentMessage }}</div>
+        }
+      </div>
+    </div>
 
-        <div class="mb-4">
-          <h6>Kategorije članarine</h6>
-          @if (categories.length > 0) {
-            <table class="table table-bordered mb-2">
-              <thead>
-                <tr>
-                  <th>Naziv kategorije</th>
-                  <th>Cijena (€)</th>
-                  <th>Snižena cijena (€, prazno = bez popusta)</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (cat of categories; track cat; let i = $index) {
-                  <tr>
-                    <td><input type="text" class="form-control form-control-sm" [(ngModel)]="cat.name" placeholder="npr. Pojedinačna"></td>
-                    <td><input type="number" class="form-control form-control-sm" [(ngModel)]="cat.price" min="0" step="0.01" placeholder="0.00"></td>
-                    <td><input type="number" class="form-control form-control-sm" [(ngModel)]="cat.discountedPrice" min="0" step="0.01" placeholder="prazno = bez popusta"></td>
-                    <td><button class="btn btn-sm btn-danger" type="button" (click)="removeCategory(i)">Ukloni</button></td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          }
-          <button class="btn btn-outline-secondary btn-sm" type="button" (click)="addCategory()">+ Dodaj kategoriju</button>
+    <!-- Annual fees section -->
+    <div class="card">
+      <div class="card-header fw-semibold">Članarine po godini</div>
+      <div class="card-body">
+        <div class="row mb-4 align-items-end">
+          <div class="col-md-4">
+            <label class="form-label">Odaberi godinu</label>
+            <select class="form-select" [(ngModel)]="selectedYear" (ngModelChange)="onYearChange($event)">
+              <option [ngValue]="null" disabled>-- Odaberi godinu --</option>
+              @for (year of years; track year) {
+                <option [ngValue]="year">{{ year }}.</option>
+              }
+            </select>
+          </div>
+          <div class="col-md-5">
+            <label class="form-label">Nova godina</label>
+            <div class="input-group">
+              <input type="number" class="form-control" [(ngModel)]="newYear" placeholder="npr. 2027" min="2000" max="2100">
+              <button class="btn btn-outline-primary" type="button" (click)="addNewYear()">Dodaj</button>
+            </div>
+          </div>
         </div>
 
-        <button class="btn btn-success" type="button" (click)="save()" [disabled]="saving">
-          {{ saving ? 'Spremanje...' : 'Spremi konfiguraciju' }}
-        </button>
-      }
-    }
+        @if (selectedYear !== null) {
+          @if (configLoading) {
+            <div class="text-muted">Učitavanje konfiguracije...</div>
+          } @else {
+            <h5 class="mb-3">{{ isNewYear ? 'Nova konfiguracija za ' : 'Konfiguracija za ' }}{{ selectedYear }}. godinu</h5>
 
-    @if (message) {
-      <div class="alert mt-3" [class.alert-success]="success" [class.alert-danger]="!success">{{ message }}</div>
-    }
+            <div class="mb-4">
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="enrollmentEnabled" [(ngModel)]="enrollmentEnabled">
+                <label class="form-check-label" for="enrollmentEnabled">Upisnina aktivna</label>
+              </div>
+              @if (enrollmentEnabled) {
+                <div class="row">
+                  <div class="col-md-3">
+                    <label class="form-label">Iznos upisnine (€)</label>
+                    <input type="number" class="form-control" [(ngModel)]="enrollmentFee" min="0" step="0.01" placeholder="0.00">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">Sniženi iznos (€)</label>
+                    <input type="number" class="form-control" [(ngModel)]="enrollmentDiscounted" min="0" step="0.01" placeholder="prazno = bez popusta">
+                  </div>
+                </div>
+              }
+            </div>
+
+            <div class="mb-4">
+              <h6>Kategorije članarine</h6>
+              @if (categories.length > 0) {
+                <table class="table table-bordered mb-2">
+                  <thead>
+                    <tr>
+                      <th>Naziv kategorije</th>
+                      <th>Cijena (€)</th>
+                      <th>Snižena cijena (€, prazno = bez popusta)</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (cat of categories; track cat; let i = $index) {
+                      <tr>
+                        <td><input type="text" class="form-control form-control-sm" [(ngModel)]="cat.name" placeholder="npr. Pojedinačna"></td>
+                        <td><input type="number" class="form-control form-control-sm" [(ngModel)]="cat.price" min="0" step="0.01" placeholder="0.00"></td>
+                        <td><input type="number" class="form-control form-control-sm" [(ngModel)]="cat.discountedPrice" min="0" step="0.01" placeholder="prazno = bez popusta"></td>
+                        <td><button class="btn btn-sm btn-danger" type="button" (click)="removeCategory(i)">Ukloni</button></td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              }
+              <button class="btn btn-outline-secondary btn-sm" type="button" (click)="addCategory()">+ Dodaj kategoriju</button>
+            </div>
+
+            <button class="btn btn-success" type="button" (click)="saveFees()" [disabled]="savingFees">
+              {{ savingFees ? 'Spremanje...' : 'Spremi konfiguraciju' }}
+            </button>
+          }
+        }
+
+        @if (feesMessage) {
+          <div class="alert mt-3 mb-0" [class.alert-success]="feesSuccess" [class.alert-danger]="!feesSuccess">{{ feesMessage }}</div>
+        }
+      </div>
+    </div>
+
   }
 </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/services/data.service';
-import { IMembershipConfig } from 'src/models/membership.model';
+import { IMembershipConfig, IPaymentSettings } from 'src/models/membership.model';
 
 @Component({
   selector: 'app-membership',
@@ -10,6 +10,7 @@ import { IMembershipConfig } from 'src/models/membership.model';
 })
 export class MembershipComponent implements OnInit {
   config: IMembershipConfig | null = null;
+  paymentSettings: IPaymentSettings | null = null;
   currentYear = new Date().getFullYear();
   loading = true;
 
@@ -17,7 +18,10 @@ export class MembershipComponent implements OnInit {
 
   async ngOnInit() {
     this.dataService.trackVisit('/join');
-    this.config = await this.dataService.readMembershipConfig();
+    [this.config, this.paymentSettings] = await Promise.all([
+      this.dataService.readMembershipConfig(),
+      this.dataService.readPaymentSettings(),
+    ]);
     this.loading = false;
   }
 }

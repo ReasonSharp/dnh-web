@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, firstValueFrom } from "rxjs";
 import { IAnnouncement } from "src/models/announcement.model";
 import { IDocument } from "src/models/document.model";
-import { IMembershipConfig } from "src/models/membership.model";
+import { IMembershipConfig, IPaymentSettings } from "src/models/membership.model";
 import { INewsItem } from "src/models/news-item.model";
 import { IStatute } from "src/models/statute.model";
 
@@ -108,13 +108,9 @@ export class DataService {
    if (!res.success) return null;
    return {
     year: res.year,
-    iban: res.iban,
-    swift: res.swift,
     enrollmentFeeEnabled: res.enrollment_fee_enabled,
     enrollmentFee: res.enrollment_fee,
     enrollmentFeeDiscounted: res.enrollment_fee_discounted ?? null,
-    admissionFormUrl: res.admission_form_url ?? null,
-    admissionFormDocumentId: res.admission_form_document_id ?? null,
     categories: (res.categories ?? []).map((c: any) => ({
      id: c.id,
      name: c.name,
@@ -141,17 +137,42 @@ export class DataService {
 
  async saveMembershipConfig(payload: {
   year: number;
-  iban: string;
-  swift: string;
   enrollment_fee_enabled: boolean;
   enrollment_fee: number;
   enrollment_fee_discounted: number | null;
-  admission_form_document_id: number | null;
   categories: { name: string; price: number; discounted_price: number | null }[];
  }): Promise<{ success: boolean; message?: string }> {
   try {
    return await firstValueFrom(
     this.http.post<{ success: boolean; message?: string }>('/api/membership.php', payload, { withCredentials: true })
+   );
+  } catch {
+   return { success: false, message: 'Greška pri spremanju.' };
+  }
+ }
+
+ async readPaymentSettings(): Promise<IPaymentSettings> {
+  try {
+   const res = await firstValueFrom(this.http.get<any>('/api/payment_settings.php'));
+   return {
+    iban: res.iban ?? '',
+    swift: res.swift ?? '',
+    admissionFormUrl: res.admission_form_url ?? null,
+    admissionFormDocumentId: res.admission_form_document_id ?? null,
+   };
+  } catch {
+   return { iban: '', swift: '', admissionFormUrl: null, admissionFormDocumentId: null };
+  }
+ }
+
+ async savePaymentSettings(payload: {
+  iban: string;
+  swift: string;
+  admission_form_document_id: number | null;
+ }): Promise<{ success: boolean; message?: string }> {
+  try {
+   return await firstValueFrom(
+    this.http.post<{ success: boolean; message?: string }>('/api/payment_settings.php', payload, { withCredentials: true })
    );
   } catch {
    return { success: false, message: 'Greška pri spremanju.' };

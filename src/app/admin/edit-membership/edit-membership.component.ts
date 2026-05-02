@@ -18,35 +18,43 @@ interface CategoryForm {
   styleUrl: './edit-membership.component.scss',
 })
 export class EditMembershipComponent implements OnInit {
+  documents: IDocument[] = [];
+  loading = true;
+
+  // Payment settings section
+  iban = '';
+  swift = '';
+  admissionFormDocumentId: number | null = null;
+  savingPayment = false;
+  paymentMessage = '';
+  paymentSuccess = false;
+
+  // Year fees section
   years: number[] = [];
   selectedYear: number | null = null;
   newYear = '';
   isNewYear = false;
-
-  iban = '';
-  swift = '';
   enrollmentEnabled = false;
   enrollmentFee = '';
   enrollmentDiscounted = '';
-  admissionFormDocumentId: number | null = null;
   categories: CategoryForm[] = [];
-
-  documents: IDocument[] = [];
-
-  message = '';
-  success = false;
-  loading = true;
   configLoading = false;
-  saving = false;
+  savingFees = false;
+  feesMessage = '';
+  feesSuccess = false;
 
   constructor(private dataService: DataService) {}
 
   async ngOnInit() {
     try {
-      const [years, docs] = await Promise.all([
+      const [payment, years, docs] = await Promise.all([
+        this.dataService.readPaymentSettings(),
         this.dataService.readMembershipYears(),
         this.dataService.readDocuments(),
       ]);
+      this.iban = payment.iban;
+      this.swift = payment.swift;
+      this.admissionFormDocumentId = payment.admissionFormDocumentId;
       this.years = years;
       this.documents = docs;
     } finally {
@@ -54,10 +62,26 @@ export class EditMembershipComponent implements OnInit {
     }
   }
 
+  async savePayment() {
+    this.paymentMessage = '';
+    this.savingPayment = true;
+    try {
+      const res = await this.dataService.savePaymentSettings({
+        iban: this.iban,
+        swift: this.swift,
+        admission_form_document_id: this.admissionFormDocumentId,
+      });
+      this.paymentSuccess = res.success;
+      this.paymentMessage = res.message ?? (res.success ? 'Podaci za uplatu uspješno spremljeni.' : 'Greška pri spremanju.');
+    } finally {
+      this.savingPayment = false;
+    }
+  }
+
   async onYearChange(year: number | null) {
     if (year === null) return;
     this.isNewYear = false;
-    this.message = '';
+    this.feesMessage = '';
     await this.loadYear(year);
   }
 
@@ -66,12 +90,9 @@ export class EditMembershipComponent implements OnInit {
     try {
       const config = await this.dataService.readMembershipConfig(year);
       if (config) {
-        this.iban = config.iban;
-        this.swift = config.swift;
         this.enrollmentEnabled = config.enrollmentFeeEnabled;
         this.enrollmentFee = config.enrollmentFee.toFixed(2);
         this.enrollmentDiscounted = config.enrollmentFeeDiscounted !== null ? config.enrollmentFeeDiscounted.toFixed(2) : '';
-        this.admissionFormDocumentId = config.admissionFormDocumentId;
         this.categories = config.categories.map(c => ({
           id: c.id,
           name: c.name,
@@ -87,24 +108,21 @@ export class EditMembershipComponent implements OnInit {
   addNewYear() {
     const y = parseInt(this.newYear, 10);
     if (!y || y < 2000 || y > 2100) {
-      this.message = 'Unesite ispravnu godinu (2000–2100).';
-      this.success = false;
+      this.feesMessage = 'Unesite ispravnu godinu (2000–2100).';
+      this.feesSuccess = false;
       return;
     }
     if (this.years.includes(y)) {
-      this.message = 'Konfiguracija za tu godinu već postoji. Odaberite je s popisa.';
-      this.success = false;
+      this.feesMessage = 'Konfiguracija za tu godinu već postoji. Odaberite je s popisa.';
+      this.feesSuccess = false;
       return;
     }
     this.selectedYear = y;
     this.isNewYear = true;
-    this.message = '';
-    this.iban = '';
-    this.swift = '';
+    this.feesMessage = '';
     this.enrollmentEnabled = false;
     this.enrollmentFee = '';
     this.enrollmentDiscounted = '';
-    this.admissionFormDocumentId = null;
     this.categories = [];
     this.newYear = '';
   }
@@ -117,26 +135,26 @@ export class EditMembershipComponent implements OnInit {
     this.categories = this.categories.filter((_, i) => i !== index);
   }
 
-  async save() {
+  async saveFees() {
     if (this.selectedYear === null) return;
-    this.message = '';
+    this.feesMessage = '';
 
     for (const cat of this.categories) {
       if (!cat.name.trim()) {
-        this.message = 'Sva polja naziva kategorije su obavezna.';
-        this.success = false;
+        this.feesMessage = 'Sva polja naziva kategorije su obavezna.';
+        this.feesSuccess = false;
         return;
       }
       const p = parseFloat(cat.price);
       if (isNaN(p) || p < 0) {
-        this.message = `Neispravna cijena za kategoriju "${cat.name}".`;
-        this.success = false;
+        this.feesMessage = `Neispravna cijena za kategoriju "${cat.name}".`;
+        this.feesSuccess = false;
         return;
       }
       const d = cat.discountedPrice !== '' ? parseFloat(cat.discountedPrice) : null;
       if (d !== null && (isNaN(d) || d < 0 || d >= p)) {
-        this.message = `Snižena cijena mora biti manja od pune cijene za kategoriju "${cat.name}".`;
-        this.success = false;
+        this.feesMessage = `Snižena cijena mora biti manja od pune cijene za kategoriju "${cat.name}".`;
+        this.feesSuccess = false;
         return;
       }
     }
@@ -145,41 +163,38 @@ export class EditMembershipComponent implements OnInit {
     const ed = this.enrollmentEnabled && this.enrollmentDiscounted !== '' ? parseFloat(this.enrollmentDiscounted) : null;
     if (this.enrollmentEnabled) {
       if (isNaN(ef) || ef < 0) {
-        this.message = 'Neispravna cijena upisnine.';
-        this.success = false;
+        this.feesMessage = 'Neispravna cijena upisnine.';
+        this.feesSuccess = false;
         return;
       }
       if (ed !== null && (isNaN(ed) || ed < 0 || ed >= ef)) {
-        this.message = 'Snižena cijena upisnine mora biti manja od pune cijene.';
-        this.success = false;
+        this.feesMessage = 'Snižena cijena upisnine mora biti manja od pune cijene.';
+        this.feesSuccess = false;
         return;
       }
     }
 
-    this.saving = true;
+    this.savingFees = true;
     try {
       const res = await this.dataService.saveMembershipConfig({
         year: this.selectedYear,
-        iban: this.iban,
-        swift: this.swift,
         enrollment_fee_enabled: this.enrollmentEnabled,
         enrollment_fee: ef,
         enrollment_fee_discounted: ed,
-        admission_form_document_id: this.admissionFormDocumentId,
         categories: this.categories.map(c => ({
           name: c.name,
           price: parseFloat(c.price) || 0,
           discounted_price: c.discountedPrice !== '' ? parseFloat(c.discountedPrice) : null,
         })),
       });
-      this.success = res.success;
-      this.message = res.message ?? (res.success ? 'Konfiguracija uspješno spremljena.' : 'Greška pri spremanju.');
+      this.feesSuccess = res.success;
+      this.feesMessage = res.message ?? (res.success ? 'Konfiguracija uspješno spremljena.' : 'Greška pri spremanju.');
       if (res.success && this.isNewYear) {
         this.years = [...this.years, this.selectedYear].sort((a, b) => b - a);
         this.isNewYear = false;
       }
     } finally {
-      this.saving = false;
+      this.savingFees = false;
     }
   }
 }

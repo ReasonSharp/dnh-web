@@ -37,12 +37,7 @@ if ($method === 'GET') {
 
     $year = isset($_GET['year']) ? (int)$_GET['year'] : (int)date('Y');
     $pdo = getDB();
-    $stmt = $pdo->prepare(
-        "SELECT mc.*, d.url AS admission_form_url
-         FROM `membership_config` mc
-         LEFT JOIN `document` d ON mc.admission_form_document_id = d.id
-         WHERE mc.year = ?"
-    );
+    $stmt = $pdo->prepare("SELECT `id`, `year`, `enrollment_fee_enabled`, `enrollment_fee`, `enrollment_fee_discounted` FROM `membership_config` WHERE `year` = ?");
     $stmt->execute([$year]);
     $config = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -61,13 +56,9 @@ if ($method === 'GET') {
     echo json_encode([
         'success' => true,
         'year' => (int)$config['year'],
-        'iban' => $config['iban'],
-        'swift' => $config['swift'],
         'enrollment_fee_enabled' => (bool)(int)$config['enrollment_fee_enabled'],
         'enrollment_fee' => (float)$config['enrollment_fee'],
         'enrollment_fee_discounted' => $config['enrollment_fee_discounted'] !== null ? (float)$config['enrollment_fee_discounted'] : null,
-        'admission_form_url' => $config['admission_form_url'] ?? null,
-        'admission_form_document_id' => $config['admission_form_document_id'] !== null ? (int)$config['admission_form_document_id'] : null,
         'categories' => array_map(fn($c) => [
             'id' => (int)$c['id'],
             'name' => $c['name'],
@@ -101,15 +92,10 @@ if ($method === 'POST') {
         exit;
     }
 
-    $iban = trim($body['iban'] ?? '');
-    $swift = trim($body['swift'] ?? '');
     $enrollmentEnabled = !empty($body['enrollment_fee_enabled']);
     $enrollmentFee = (float)($body['enrollment_fee'] ?? 0);
     $enrollmentDiscounted = isset($body['enrollment_fee_discounted']) && $body['enrollment_fee_discounted'] !== null && $body['enrollment_fee_discounted'] !== ''
         ? (float)$body['enrollment_fee_discounted']
-        : null;
-    $admissionDocId = isset($body['admission_form_document_id']) && $body['admission_form_document_id'] !== null
-        ? (int)$body['admission_form_document_id']
         : null;
     $categories = $body['categories'] ?? [];
 
@@ -135,17 +121,14 @@ if ($method === 'POST') {
     $pdo->beginTransaction();
 
     $stmt = $pdo->prepare(
-        "INSERT INTO `membership_config` (`year`, `iban`, `swift`, `enrollment_fee_enabled`, `enrollment_fee`, `enrollment_fee_discounted`, `admission_form_document_id`)
-         VALUES (?, ?, ?, ?, ?, ?, ?)
+        "INSERT INTO `membership_config` (`year`, `enrollment_fee_enabled`, `enrollment_fee`, `enrollment_fee_discounted`)
+         VALUES (?, ?, ?, ?)
          ON DUPLICATE KEY UPDATE
-           `iban` = VALUES(`iban`),
-           `swift` = VALUES(`swift`),
            `enrollment_fee_enabled` = VALUES(`enrollment_fee_enabled`),
            `enrollment_fee` = VALUES(`enrollment_fee`),
-           `enrollment_fee_discounted` = VALUES(`enrollment_fee_discounted`),
-           `admission_form_document_id` = VALUES(`admission_form_document_id`)"
+           `enrollment_fee_discounted` = VALUES(`enrollment_fee_discounted`)"
     );
-    $stmt->execute([$year, $iban, $swift, $enrollmentEnabled ? 1 : 0, $enrollmentFee, $enrollmentDiscounted, $admissionDocId]);
+    $stmt->execute([$year, $enrollmentEnabled ? 1 : 0, $enrollmentFee, $enrollmentDiscounted]);
 
     $stmt = $pdo->prepare("SELECT `id` FROM `membership_config` WHERE `year` = ?");
     $stmt->execute([$year]);

@@ -5,7 +5,8 @@
   @if (loading) {
     <div class="text-muted">Učitavanje...</div>
   } @else if (!config) {
-    <p>Za informacije o članarinama kontaktirajte nas na <a href="mailto:dnh@dnh.hr">dnh@dnh.hr</a>.</p>
+    <p>Visine članarina za {{ currentYear }}. godinu još nisu određene. Bit će određene na idućoj skupštini.</p>
+    <p>Svi zainteresirani za učlanjenje mogu se javiti putem e-maila na <a href="mailto:dnh@dnh.hr">dnh@dnh.hr</a>.</p>
   } @else {
     <p>Članarine za {{ currentYear }}. godinu su kako slijedi:</p>
     <ul>
@@ -43,20 +44,20 @@
 
     <p>Za učlanjenje molimo popunite pristupnicu i popunjenu je pošaljite na <a href="mailto:dnh@dnh.hr">dnh@dnh.hr</a> uz potvrdu o plaćanju članarine i - ukoliko ste novi član ili niste bili član dvije ili više godina - upisnine.</p>
 
-    @if (config.admissionFormUrl) {
+    @if (paymentSettings?.admissionFormUrl) {
       <ul>
-        <li><a [href]="config.admissionFormUrl" target="newTab">Pristupnicu preuzmite ovdje</a></li>
+        <li><a [href]="paymentSettings!.admissionFormUrl" target="newTab">Pristupnicu preuzmite ovdje</a></li>
       </ul>
     }
 
     <p>Uplatu ukupnog iznosa molimo izvršiti na:</p>
     <div class="row">
       <div class="col-lg-2 col-sm-3">IBAN</div>
-      <div class="col-lg-10 col-sm-9">{{ config.iban }}</div>
+      <div class="col-lg-10 col-sm-9">{{ paymentSettings?.iban }}</div>
     </div>
     <div class="row">
       <div class="col-lg-2 col-sm-3">SWIFT</div>
-      <div class="col-lg-10 col-sm-7">{{ config.swift }}</div>
+      <div class="col-lg-10 col-sm-7">{{ paymentSettings?.swift }}</div>
     </div>
     <div class="row">
       <div class="col-lg-2 col-sm-3">Poziv na broj</div>
