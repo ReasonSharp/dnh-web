@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { firstValueFrom } from 'rxjs';
+import { DataService } from 'src/services/data.service';
 
 interface Document {
  id: number;
@@ -34,14 +33,14 @@ export class EditStatutesComponent implements OnInit {
  message = '';
  success = false;
 
- constructor(private http: HttpClient) { }
+ constructor(private dataService: DataService) { }
 
  async ngOnInit() {
   try {
-   const resDocs = await firstValueFrom(this.http.get<{ success: boolean, documents: Document[] }>('/api/documents.php', { withCredentials: true }));
+   const resDocs = await this.dataService.getDocuments();
    if (resDocs.success) this.documents = resDocs.documents;
 
-   const resStats = await firstValueFrom(this.http.get<{ success: boolean, statutes: Statute[] }>('/api/statutes.php', { withCredentials: true }));
+   const resStats = await this.dataService.getStatutes();
    if (resStats.success) this.statutes = resStats.statutes;
 
    this.updateAvailable();
@@ -71,12 +70,9 @@ export class EditStatutesComponent implements OnInit {
   this.selectedDocumentId = 0;
  }
 
- remove(statuteId: number) {
-  const index = this.statutes.findIndex(s => s.id === statuteId);
-  if (index > -1) {
-   this.statutes.splice(index, 1);
-   this.updateOrders();
-  }
+ remove(selected: Statute) {
+  this.statutes = this.statutes.filter(s => s !== selected);
+  this.updateOrders();
   this.updateAvailable();
  }
 
@@ -100,8 +96,8 @@ export class EditStatutesComponent implements OnInit {
   this.statutes.forEach((s, i) => s.display_order = i);
  }
 
- setCurrent(statuteId: number) {
-  this.statutes.forEach(s => s.is_current = (s.id === statuteId));
+ setCurrent(selected: Statute) {
+  this.statutes.forEach(s => s.is_current = (s === selected));
  }
 
  async saveChanges() {
@@ -116,13 +112,11 @@ export class EditStatutesComponent implements OnInit {
    is_current: s.is_current
   }));
   try {
-   const res = await firstValueFrom(
-    this.http.post<{ success: boolean, message?: string }>('/api/statutes.php', { action: 'update', items }, { withCredentials: true })
-   );
+   const res = await this.dataService.updateStatutes(items);
    this.success = res.success;
    this.message = res.message ?? (res.success ? 'Promjene spremljene.' : 'Greška pri spremanju.');
    if (res.success) {
-    const resStats = await firstValueFrom(this.http.get<{ success: boolean, statutes: Statute[] }>('/api/statutes.php', { withCredentials: true }));
+    const resStats = await this.dataService.getStatutes();
     if (resStats.success) this.statutes = resStats.statutes;
     this.updateAvailable();
    }

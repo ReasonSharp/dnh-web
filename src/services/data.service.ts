@@ -70,4 +70,22 @@ export class DataService {
    return { success: false, message: 'Error changing password' };
   }
  }
+
+ async getDocuments(): Promise<{success: boolean, documents: {id: number, name: string, url: string}[]}> {
+  return await firstValueFrom(
+   this.http.get<{success: boolean, documents: {id: number, name: string, url: string}[]}>('/api/documents.php', { withCredentials: true })
+  );
+ }
+
+ async getStatutes(): Promise<{success: boolean, statutes: {id: number, documentID: number, name: string, url: string, display_order: number, is_current: boolean}[]}> {
+  return await firstValueFrom(
+   this.http.get<{success: boolean, statutes: {id: number, documentID: number, name: string, url: string, display_order: number, is_current: boolean}[]}>('/api/statutes.php', { withCredentials: true })
+  );
+ }
+
+ async updateStatutes(items: {documentID: number, display_order: number, is_current: boolean}[]): Promise<{success: boolean, message?: string}> {
+  return await firstValueFrom(
+   this.http.post<{success: boolean, message?: string}>('/api/statutes.php', { action: 'update', items }, { withCredentials: true })
+  );
+ }
 }

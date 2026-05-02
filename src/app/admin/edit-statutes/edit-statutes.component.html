@@ -25,13 +25,13 @@
         <tr>
           <td>{{ stat.name }}</td>
           <td>
-            <input type="radio" [checked]="stat.is_current" (change)="setCurrent(stat.id)">
+            <input type="radio" [checked]="stat.is_current" (change)="setCurrent(stat)">
           </td>
           <td>{{ i + 1 }}</td>
           <td>
             <button class="btn btn-sm btn-secondary me-1" (click)="moveUp(i)" [disabled]="i === 0">Gore</button>
             <button class="btn btn-sm btn-secondary me-1" (click)="moveDown(i)" [disabled]="i === statutes.length - 1">Dolje</button>
-            <button class="btn btn-sm btn-danger" (click)="remove(stat.id)">Ukloni</button>
+            <button class="btn btn-sm btn-danger" (click)="remove(stat)">Ukloni</button>
           </td>
         </tr>
       }
