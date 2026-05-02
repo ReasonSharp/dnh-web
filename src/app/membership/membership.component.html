@@ -4,42 +4,44 @@
 
   @if (loading) {
     <div class="text-muted">Učitavanje...</div>
-  } @else if (!config) {
-    <p>Visine članarina za {{ currentYear }}. godinu još nisu određene. Bit će određene na idućoj skupštini.</p>
-    <p>Svi zainteresirani za učlanjenje mogu se javiti putem e-maila na <a href="mailto:dnh@dnh.hr">dnh@dnh.hr</a>.</p>
   } @else {
-    <p>Članarine za {{ currentYear }}. godinu su kako slijedi:</p>
-    <ul>
-      @for (cat of config.categories; track cat.id) {
-        <li>
-          {{ cat.name }}:
-          @if (cat.discountedPrice !== null) {
-            <s>{{ cat.price.toFixed(2) }} €</s>&nbsp;@if (cat.discountedPrice === 0) {
-              <strong>Besplatno!</strong>
+    @if (!config) {
+      <p>Visine članarina za {{ currentYear }}. godinu još nisu određene. Bit će određene na idućoj skupštini.</p>
+      <p>Svi zainteresirani za učlanjenje mogu se javiti putem e-maila na <a href="mailto:dnh@dnh.hr">dnh@dnh.hr</a>.</p>
+    } @else {
+      <p>Članarine za {{ currentYear }}. godinu su kako slijedi:</p>
+      <ul>
+        @for (cat of config.categories; track cat.id) {
+          <li>
+            {{ cat.name }}:
+            @if (cat.discountedPrice !== null) {
+              <s>{{ cat.price.toFixed(2) }} €</s>&nbsp;@if (cat.discountedPrice === 0) {
+                <strong>Besplatno!</strong>
+              } @else {
+                {{ cat.discountedPrice.toFixed(2) }} €
+              }
             } @else {
-              {{ cat.discountedPrice.toFixed(2) }} €
+              {{ cat.price.toFixed(2) }} €
             }
-          } @else {
-            {{ cat.price.toFixed(2) }} €
-          }
-        </li>
-      }
-    </ul>
+          </li>
+        }
+      </ul>
 
-    @if (config.enrollmentFeeEnabled) {
-      <p>
-        <strong>Novi članovi uz članarinu plaćaju i upisninu:
-          @if (config.enrollmentFeeDiscounted !== null) {
-            <s>{{ config.enrollmentFee.toFixed(2) }} €</s>&nbsp;@if (config.enrollmentFeeDiscounted === 0) {
-              Besplatno!
+      @if (config.enrollmentFeeEnabled) {
+        <p>
+          <strong>Novi članovi uz članarinu plaćaju i upisninu:
+            @if (config.enrollmentFeeDiscounted !== null) {
+              <s>{{ config.enrollmentFee.toFixed(2) }} €</s>&nbsp;@if (config.enrollmentFeeDiscounted === 0) {
+                Besplatno!
+              } @else {
+                {{ config.enrollmentFeeDiscounted.toFixed(2) }} €
+              }
             } @else {
-              {{ config.enrollmentFeeDiscounted.toFixed(2) }} €
+              {{ config.enrollmentFee.toFixed(2) }} €
             }
-          } @else {
-            {{ config.enrollmentFee.toFixed(2) }} €
-          }
-          po osobi</strong>
-      </p>
+            po osobi</strong>
+        </p>
+      }
     }
 
     <p>Za učlanjenje molimo popunite pristupnicu i popunjenu je pošaljite na <a href="mailto:dnh@dnh.hr">dnh@dnh.hr</a> uz potvrdu o plaćanju članarine i - ukoliko ste novi član ili niste bili član dvije ili više godina - upisnine.</p>
