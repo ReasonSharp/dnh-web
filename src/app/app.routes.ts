@@ -20,6 +20,8 @@ import { EditAnnouncementComponent } from './admin/edit-announcement/edit-announ
 import { EditStatutesComponent } from './admin/edit-statutes/edit-statutes.component';
 import { NewsItemResolver } from 'src/services/resolvers/news-item-resolver.service';
 import { AnnouncementResolver } from 'src/services/resolvers/announcement-resolver.service';
+import { DocumentResolver } from 'src/services/resolvers/document-resolver.service';
+import { StatuteResolver } from 'src/services/resolvers/statute-resolver.service';
 
 export const routes: Routes = [
   { title: "DNH", path: "", pathMatch: "full", component: IndexComponent, resolve: [NewsItemResolver, AnnouncementResolver] },
@@ -35,7 +37,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'upload', pathMatch: 'full' },
       { path: 'upload', component: UploadImageComponent },
       { path: 'upload-document', component: UploadDocumentComponent },
-      { path: 'edit-statutes', component: EditStatutesComponent },
+      { path: 'edit-statutes', component: EditStatutesComponent, resolve: [DocumentResolver, StatuteResolver] },
       { path: 'create-news', component: CreateNewsComponent },
       { path: 'create-announcement', component: CreateAnnouncementComponent },
       { path: 'edit-news', component: EditNewsComponent },

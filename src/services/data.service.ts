@@ -2,12 +2,16 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, firstValueFrom } from "rxjs";
 import { IAnnouncement } from "src/models/announcement.model";
+import { IDocument } from "src/models/document.model";
 import { INewsItem } from "src/models/news-item.model";
+import { IStatute } from "src/models/statute.model";
 
 @Injectable({ providedIn: 'root' })
 export class DataService {
  newsItems: BehaviorSubject<INewsItem[]> = new BehaviorSubject<INewsItem[]>([]);
  announcements: BehaviorSubject<IAnnouncement[]> = new BehaviorSubject<IAnnouncement[]>([]);
+ documents: BehaviorSubject<IDocument[]> = new BehaviorSubject<IDocument[]>([]);
+ statutes: BehaviorSubject<IStatute[]> = new BehaviorSubject<IStatute[]>([]);
 
  constructor(private http: HttpClient) { }
 
@@ -26,6 +30,45 @@ export class DataService {
  async readAnnouncements() : Promise<IAnnouncement[]> {
   this.announcements.next(await firstValueFrom(this.http.get<IAnnouncement[]>("/api/main.php?type=announcements")));
   return this.announcements.getValue();
+ }
+
+ async readDocuments(): Promise<IDocument[]> {
+  const res = await firstValueFrom(
+   this.http.get<{ success: boolean, documents: { id: string | number, name: string, url: string }[] }>(
+    '/api/documents.php', { withCredentials: true }
+   )
+  );
+  const docs: IDocument[] = res.success
+   ? res.documents.map(d => ({ id: Number(d.id), name: d.name, url: d.url }))
+   : [];
+  this.documents.next(docs);
+  return docs;
+ }
+
+ async readStatutes(): Promise<IStatute[]> {
+  const res = await firstValueFrom(
+   this.http.get<{ success: boolean, statutes: { id: string | number, documentID: string | number, name: string, url: string, display_order: string | number, is_current: string | number | boolean }[] }>(
+    '/api/statutes.php', { withCredentials: true }
+   )
+  );
+  const stats: IStatute[] = res.success
+   ? res.statutes.map(s => ({
+    id: Number(s.id),
+    documentID: Number(s.documentID),
+    name: s.name,
+    url: s.url,
+    display_order: Number(s.display_order),
+    is_current: !!Number(s.is_current)
+   }))
+   : [];
+  this.statutes.next(stats);
+  return stats;
+ }
+
+ async updateStatutes(items: { documentID: number, display_order: number, is_current: boolean }[]): Promise<{ success: boolean, message?: string }> {
+  return await firstValueFrom(
+   this.http.post<{ success: boolean, message?: string }>('/api/statutes.php', { action: 'update', items }, { withCredentials: true })
+  );
  }
 
  trackVisit(page: string) {
@@ -69,23 +112,5 @@ export class DataService {
   } catch (e) {
    return { success: false, message: 'Error changing password' };
   }
- }
-
- async getDocuments(): Promise<{success: boolean, documents: {id: number, name: string, url: string}[]}> {
-  return await firstValueFrom(
-   this.http.get<{success: boolean, documents: {id: number, name: string, url: string}[]}>('/api/documents.php', { withCredentials: true })
-  );
- }
-
- async getStatutes(): Promise<{success: boolean, statutes: {id: number, documentID: number, name: string, url: string, display_order: number, is_current: boolean}[]}> {
-  return await firstValueFrom(
-   this.http.get<{success: boolean, statutes: {id: number, documentID: number, name: string, url: string, display_order: number, is_current: boolean}[]}>('/api/statutes.php', { withCredentials: true })
-  );
- }
-
- async updateStatutes(items: {documentID: number, display_order: number, is_current: boolean}[]): Promise<{success: boolean, message?: string}> {
-  return await firstValueFrom(
-   this.http.post<{success: boolean, message?: string}>('/api/statutes.php', { action: 'update', items }, { withCredentials: true })
-  );
  }
 }

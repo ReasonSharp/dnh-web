@@ -3,9 +3,9 @@
  <div class="mb-3">
   <label class="form-label">Odaberi dokument za dodavanje</label>
   <select class="form-control" [(ngModel)]="selectedDocumentId">
-   <option [value]="0">-- Odaberi --</option>
-   @for (doc of availableDocuments; track doc) {
-    <option [value]="doc.id">{{ doc.name }}</option>
+   <option [ngValue]="0">-- Odaberi --</option>
+   @for (doc of availableDocuments; track doc.id) {
+    <option [ngValue]="doc.id">{{ doc.name }}</option>
    }
   </select>
   <button class="btn btn-primary mt-2" (click)="addToArchive()" [disabled]="selectedDocumentId === 0">Dodaj</button>
