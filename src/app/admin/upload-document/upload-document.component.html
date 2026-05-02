@@ -4,7 +4,11 @@
     <label class="form-label">Odaberi PDF dokument</label>
     <input type="file" class="form-control" accept=".pdf,application/pdf" (change)="onFileSelected($event)">
   </div>
-  <button class="btn btn-primary" [disabled]="!selectedFile" (click)="uploadFile()">Upload</button>
+  <div class="mb-3">
+    <label class="form-label">Naziv dokumenta</label>
+    <input type="text" class="form-control" [(ngModel)]="name">
+  </div>
+  <button class="btn btn-primary" [disabled]="!selectedFile || !name.trim()" (click)="uploadFile()">Upload</button>
   @if (message) {
     <div class="alert mt-3" [class]="success ? 'alert-success' : 'alert-danger'">{{ message }}</div>
   }

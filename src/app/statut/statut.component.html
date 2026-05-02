@@ -1,7 +1,17 @@
 <div class="container">
     <h2>Statut Društva naturista Hrvatske</h2>
-    <a href="/assets/statut.pdf" target="newTab">Statut DNH - 2015.</a>
+    @if (statuteData.current) {
+      <a [href]="statuteData.current.url" target="_blank">{{ statuteData.current.name }}</a>
+    } @else {
+      <p>Trenutni statut nije dostupan.</p>
+    }
     <hr>
     <h2>Arhiva statuta</h2>
-    <a href="/assets/statut-2002.pdf" target="newTab">Statut DNH - 2002.</a>
+    @if (statuteData.archive.length > 0) {
+      @for (item of statuteData.archive; track item) {
+        <div><a [href]="item.url" target="_blank">{{ item.name }}</a></div>
+      }
+    } @else {
+      <p>Nema arhiviranih statuta.</p>
+    }
 </div>

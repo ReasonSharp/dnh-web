@@ -1,0 +1,47 @@
+<div class="p-4">
+  <h4 class="mb-4">Arhiva statuta</h4>
+  <div class="mb-3">
+    <label class="form-label">Odaberi dokument za dodavanje</label>
+    <select class="form-control" [(ngModel)]="selectedDocumentId">
+      <option [value]="0">-- Odaberi --</option>
+      @for (doc of availableDocuments; track doc) {
+        <option [value]="doc.id">{{ doc.name }}</option>
+      }
+    </select>
+    <button class="btn btn-primary mt-2" (click)="addToArchive()" [disabled]="selectedDocumentId === 0">Dodaj</button>
+  </div>
+  <h5>Trenutna arhiva</h5>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Naziv</th>
+        <th>Trenutni</th>
+        <th>Redoslijed</th>
+        <th>Akcije</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (stat of statutes; track stat; let i = $index) {
+        <tr>
+          <td>{{ stat.name }}</td>
+          <td>
+            <input type="radio" [checked]="stat.is_current" (change)="setCurrent(stat.id)">
+          </td>
+          <td>{{ i + 1 }}</td>
+          <td>
+            <button class="btn btn-sm btn-secondary me-1" (click)="moveUp(i)" [disabled]="i === 0">Gore</button>
+            <button class="btn btn-sm btn-secondary me-1" (click)="moveDown(i)" [disabled]="i === statutes.length - 1">Dolje</button>
+            <button class="btn btn-sm btn-danger" (click)="remove(stat.id)">Ukloni</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+  @if (statutes.length === 0) {
+    <p>Nema statuta u arhivi.</p>
+  }
+  <button class="btn btn-success" (click)="saveChanges()">Spremi promjene</button>
+  @if (message) {
+    <div class="alert mt-3" [class.alert-success]="success" [class.alert-danger]="!success">{{ message }}</div>
+  }
+</div>

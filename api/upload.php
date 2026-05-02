@@ -75,12 +75,18 @@ $pdo = new PDO(
  [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
 );
 
+$name = trim($_POST['name'] ?? '');
+if (empty($name)) {
+ echo json_encode(['success' => false, 'message' => 'Naziv je obavezan.']);
+ exit;
+}
+
 if ($type === 'image') {
  $stmt = $pdo->prepare("INSERT INTO `image` (`url`) VALUES (?)");
  $stmt->execute([$publicUrl]);
 } else {
- $stmt = $pdo->prepare("INSERT INTO `document` (`url`, `original_filename`) VALUES (?, ?)");
- $stmt->execute([$publicUrl, $file['name']]);
+ $stmt = $pdo->prepare("INSERT INTO `document` (`url`, `original_filename`, `name`) VALUES (?, ?, ?)");
+ $stmt->execute([$publicUrl, $file['name'], $name]);
 }
 
 echo json_encode([
