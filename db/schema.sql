@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `image` (
 ) ENGINE=InnoDB DEFAULT CHARSET 'utf8mb4' COLLATE 'utf8mb4_croatian_ci';
 
 CREATE TABLE IF NOT EXISTS `document` (
- `documentID` INT AUTO_INCREMENT PRIMARY KEY,
+ `documentID` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
  `url` TEXT NOT NULL,
  `original_filename` TEXT NOT NULL,
  `name` TEXT NOT NULL,
@@ -60,7 +60,8 @@ CREATE TABLE IF NOT EXISTS `statute` (
  `display_order` INT NOT NULL DEFAULT 0,
  `is_current` TINYINT(1) NOT NULL DEFAULT 0,
  KEY `display_order` (`display_order`),
- FOREIGN KEY (`documentID`) REFERENCES `document` (`documentID`) ON DELETE CASCADE
+ KEY `documentID` (`documentID`),
+ FOREIGN KEY (`documentID`) REFERENCES `document` (`documentID`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET 'utf8mb4' COLLATE 'utf8mb4_croatian_ci';
 
 INSERT INTO `news` (`date`, `blurb`, `imageURL`, `link`, `author`, `body`) VALUES
