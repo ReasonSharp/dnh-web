@@ -1,0 +1,56 @@
+<div class="p-4">
+  <h4 class="mb-4">Uredi kontakt podatke</h4>
+
+  @if (loading) {
+    <div class="text-muted">Učitavanje...</div>
+  } @else {
+    @for (cat of categories; track cat; let ci = $index) {
+      <div class="card mb-3">
+        <div class="card-header d-flex align-items-center gap-2">
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="cat.title" placeholder="Naslov kategorije">
+          <button class="btn btn-sm btn-secondary" type="button" (click)="moveCatUp(ci)" [disabled]="ci === 0">Gore</button>
+          <button class="btn btn-sm btn-secondary" type="button" (click)="moveCatDown(ci)" [disabled]="ci === categories.length - 1">Dolje</button>
+          <button class="btn btn-sm btn-danger" type="button" (click)="removeCategory(ci)">Ukloni</button>
+        </div>
+        <div class="card-body">
+          @if (cat.items.length > 0) {
+            <table class="table table-sm table-bordered mb-2">
+              <thead>
+                <tr>
+                  <th>Vrijednost</th>
+                  <th>Link (neobavezno)</th>
+                  <th style="width: 1%"></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of cat.items; track item; let ii = $index) {
+                  <tr>
+                    <td><input type="text" class="form-control form-control-sm" [(ngModel)]="item.value" placeholder="npr. dnh@dnh.hr"></td>
+                    <td><input type="text" class="form-control form-control-sm" [(ngModel)]="item.link" placeholder="npr. mailto:dnh@dnh.hr"></td>
+                    <td class="text-nowrap">
+                      <button class="btn btn-sm btn-secondary me-1" type="button" (click)="moveItemUp(ci, ii)" [disabled]="ii === 0">Gore</button>
+                      <button class="btn btn-sm btn-secondary me-1" type="button" (click)="moveItemDown(ci, ii)" [disabled]="ii === cat.items.length - 1">Dolje</button>
+                      <button class="btn btn-sm btn-danger" type="button" (click)="removeItem(ci, ii)">Ukloni</button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+          <button class="btn btn-outline-secondary btn-sm" type="button" (click)="addItem(ci)">+ Dodaj stavku</button>
+        </div>
+      </div>
+    }
+
+    <div class="d-flex gap-2 mt-2">
+      <button class="btn btn-outline-secondary" type="button" (click)="addCategory()">+ Dodaj kategoriju</button>
+      <button class="btn btn-success" type="button" (click)="save()" [disabled]="saving">
+        {{ saving ? 'Spremanje...' : 'Spremi kontakt podatke' }}
+      </button>
+    </div>
+
+    @if (message) {
+      <div class="alert mt-3" [class.alert-success]="success" [class.alert-danger]="!success">{{ message }}</div>
+    }
+  }
+</div>

@@ -17,6 +17,7 @@ import { CreateNewsComponent } from './admin/create-news/create-news.component';
 import { CreateAnnouncementComponent } from './admin/create-announcement/create-announcement.component';
 import { EditNewsComponent } from './admin/edit-news/edit-news.component';
 import { EditAnnouncementComponent } from './admin/edit-announcement/edit-announcement.component';
+import { EditContactComponent } from './admin/edit-contact/edit-contact.component';
 import { EditMembershipComponent } from './admin/edit-membership/edit-membership.component';
 import { EditStatutesComponent } from './admin/edit-statutes/edit-statutes.component';
 import { NewsItemResolver } from 'src/services/resolvers/news-item-resolver.service';
@@ -40,6 +41,7 @@ export const routes: Routes = [
       { path: 'upload-document', component: UploadDocumentComponent },
       { path: 'edit-statutes', component: EditStatutesComponent, resolve: [DocumentResolver, StatuteResolver] },
       { path: 'edit-membership', component: EditMembershipComponent },
+      { path: 'edit-contact', component: EditContactComponent },
       { path: 'create-news', component: CreateNewsComponent },
       { path: 'create-announcement', component: CreateAnnouncementComponent },
       { path: 'edit-news', component: EditNewsComponent },

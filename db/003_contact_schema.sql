@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS `contact_category` (
+  `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `title` VARCHAR(100) NOT NULL,
+  `display_order` INT NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_croatian_ci;
+
+CREATE TABLE IF NOT EXISTS `contact_item` (
+  `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `category_id` INT UNSIGNED NOT NULL,
+  `value` VARCHAR(255) NOT NULL,
+  `link` VARCHAR(500) NULL DEFAULT NULL,
+  `display_order` INT NOT NULL DEFAULT 0,
+  FOREIGN KEY (`category_id`) REFERENCES `contact_category` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_croatian_ci;

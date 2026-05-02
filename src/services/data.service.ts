@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, firstValueFrom } from "rxjs";
 import { IAnnouncement } from "src/models/announcement.model";
 import { IDocument } from "src/models/document.model";
+import { IContactCategory } from "src/models/contact.model";
 import { IMembershipConfig, IPaymentSettings } from "src/models/membership.model";
 import { INewsItem } from "src/models/news-item.model";
 import { IStatute } from "src/models/statute.model";
@@ -173,6 +174,38 @@ export class DataService {
   try {
    return await firstValueFrom(
     this.http.post<{ success: boolean; message?: string }>('/api/payment_settings.php', payload, { withCredentials: true })
+   );
+  } catch {
+   return { success: false, message: 'Greška pri spremanju.' };
+  }
+ }
+
+ async readContactInfo(): Promise<IContactCategory[]> {
+  try {
+   const res = await firstValueFrom(this.http.get<any>('/api/contact.php'));
+   if (!res.success) return [];
+   return (res.categories ?? []).map((cat: any) => ({
+    id: cat.id,
+    title: cat.title,
+    displayOrder: cat.display_order,
+    items: (cat.items ?? []).map((item: any) => ({
+     id: item.id,
+     value: item.value,
+     link: item.link ?? null,
+     displayOrder: item.display_order,
+    })),
+   }));
+  } catch {
+   return [];
+  }
+ }
+
+ async saveContactInfo(
+  categories: { title: string; items: { value: string; link: string | null }[] }[]
+ ): Promise<{ success: boolean; message?: string }> {
+  try {
+   return await firstValueFrom(
+    this.http.post<{ success: boolean; message?: string }>('/api/contact.php', { categories }, { withCredentials: true })
    );
   } catch {
    return { success: false, message: 'Greška pri spremanju.' };

@@ -1,15 +1,15 @@
 <div class="container">
     <h1>Kontakt</h1>
     <div class="d-flex flex-column mx-3">
-        @for (item of functions; track item) {
+        @for (cat of categories; track cat.id) {
             <div class="row">
-                <div class="col-lg-2 col-sm-3">{{ item.title }} </div>
+                <div class="col-lg-2 col-sm-3">{{ cat.title }} </div>
                 <div class="col-lg-10 col-sm-9">
-                    @for (subitem of item.items; track subitem) {
-                        @if (subitem.link) {
-                            <a href="{{ subitem.link }}">{{ subitem.value }}</a><br>
+                    @for (item of cat.items; track item.id) {
+                        @if (item.link) {
+                            <a href="{{ item.link }}">{{ item.value }}</a><br>
                         } @else {
-                            {{ subitem.value }}<br>
+                            {{ item.value }}<br>
                         }
                     }
                 </div>
